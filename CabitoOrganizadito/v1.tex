@@ -1,0 +1,148 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}   % for nice boxes
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+% Increase header height to avoid overlap
+\setlength{\headheight}{40pt}
+
+
+% Move footer up (default ~30pt)
+\setlength{\footskip}{20pt}
+
+% Left header (university and exam info)
+\lhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    Universidad Jorge Tadeo Lozano\\
+    Estructuras de Datos\\
+    Prueba de Programación: Segundo momento 2025-2 (\textbf{Hasta Diccionarios y Listas})%
+  }%
+}
+
+% Right header (date, professor, monitor)
+\rhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    \textbf{Fecha}: 17 de septiembre de 2025\\
+    \textbf{Profesor}: José Alejandro Franco Calderón\\
+    \textbf{Monitor}: Ludwig Alvarado Becerra%
+  }%
+}
+
+% Optional: page number in center footer
+\cfoot{\thepage}
+
+% Paragraph spacing
+\setlength{\parskip}{1em}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+                    fonttitle=\bfseries, breakable]
+  \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+    \hline
+    \textbf{Entrada} & \textbf{Salida} \\
+    \hline
+}{\\ \hline
+  \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+    {\LARGE \bf Cabito Organizadito}\\[1ex]
+    Autor: Ludwig Alvarado
+\end{center}
+
+
+Cabito (figura \ref{fig:cabos} a la izquierda) es la mascota de la Universidad Jorge Tadeo Lozano. Él es el sucesor de Cabo (figura \ref{fig:cabos} a la derecha, lo vamos a llamar Don Cabo), un perrito muy querido por toda la comunidad Tadeísta (al igual que Cabito) hace muchos años\ldots Cabito llego como un compañero de Don Cabo y es el que hoy en día conocemos en la Tadeo. Estos dos amados perritos en el corto tiempo que estuvieron juntos se pasaron algunas \textit{mañas}, en especial Don Cabo (como gran mentor) a Cabito.
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/img1.jpg}
+  \caption{Cabito y Cabo. Autor de la foto: Universidad Jorge Tadeo Lozano}
+  \label{fig:cabos}
+\end{figure}
+
+
+Entre una de las muchas \textit{mañas}, está la comida\ldots Don Cabo en un día de enseñanzas a Cabito le dijo: ``\textit{guau guau, guauuu guau guau woof, woof guau woooof\ldots}'' En español esto quiere decir ``Cabito, cuando tengas hambre, pídele comida a esos ingenuos estudiantes\ldots'' Siguiendo sus aprendizajes, Cabito mira con sus tiernos ojos a los estudiantes en busca de comida y ellos le dan (\textbf{¡Nunca le debes dar comida a Cabito!}).
+
+Cada vez que alguien le da comida a Cabito él se va a su \textit{guarida secreta} y coloca la comida que le han dado en el suelo y organiza las unidades de comida por filas. Cabito sigue el siguiente patrón; en la primera fila coloca 1 unidad de comida, en la segunda fila coloca 2 unidades de comida, y así sucesivamente, entonces en la fila \(i\) Cabito coloca \(i\) unidades de comida.
+
+Al final de cada día Cabito quiere saber cuántas filas de comida puede organizar y tu misión es escribir un programa para ayudarlo.
+
+\subsection*{Entrada del programa}
+
+
+Cabito te va a dar un número entero (\(1 \leq n \leq 100\)), la cantidad total de unidades de comida que logró recolectar a lo largo del día. Recuerda que Cabito organiza su comida por filas y en la primera fila debe haber 1 unidad de comida, en la segunda fila 2 unidades de comida, en la tercera fila 3 unidades de comida y así sucesivamente\ldots
+
+
+\subsection*{Salida del programa}
+
+Lo que tu programa debe hacer es imprimir un número entero, la cantidad de filas que Cabito puede formar con el \(n\) dado. Si Cabito te da \(n = 3\) (tres unidades de comida), en la primera fila hay una unidad de comida y en la segunda dos. Por lo tanto, lo que debes imprimir es \texttt{2} (porque hay 2 filas en total). Sin embargo, hay un detalle extra, en la fila \(i\) \textbf{deben haber mínimo} \(i\) unidades de comida. Es decir, en el caso de que Cabito te de \(n=4\) la comida se debe organizar así; en la primera fila una unidad de comida, en la segunda fila \textbf{3} unidades de comida. Esto se debe a que para tener una tercera fila deben haber \textbf{mínimo} 3 unidades de comida, por lo tanto, para el caso \(n = 4\) tu programa debe imprimir \texttt{2}.
+
+\subsection*{Casos de prueba de ejemplo}
+
+\begin{sample}{1}{}
+\texttt{3}
+&
+\texttt{2}
+\end{sample}
+
+\begin{sample}{2}{}
+\texttt{6}
+&
+\texttt{3}
+\end{sample}
+
+\begin{sample}{3}{}
+\texttt{4}
+&
+\texttt{2}
+\end{sample}
+
+
+
+\subsection*{Notas}
+
+En la primera prueba, Cabito reparte \texttt{3} unidades: pone 1 en la primera fila y 2 en la segunda, usando en total \texttt{2} filas.
+
+En la tercera prueba, con \texttt{4} unidades: coloca 1 en la primera fila y 3 en la segunda. No alcanza para una tercera (que requeriría 6 unidades en total, vea prueba 2), así que también se usan \texttt{2} filas.
+
+
+\subsection*{Aspectos Importantes}
+
+ \begin{enumerate}
+  \item La prueba se resolverá en \textbf{2 momentos}: primero en papel, sin editor de código (\textbf{valdrá 3.0 puntos}). Segundo, pasará el algoritmo desarrollando en papel al editor de código (\textbf{valdrá 2.0 puntos}).
+  \item Hagan uso de los conceptos aprendidos hasta el tema de \textbf{diccionarios y listas}.
+  \item Asuman que el valor que se va a ingresar es de tipo entero positivo.
+  \item Pueden hacer uso del concepto de listas por comprensión.
+  \item Pueden usar solo la función \texttt{range()}, no se permite el uso de otras funciones, si tienen dudas pregunten al profesor si es permitida, de lo contrario si la usa y no es permitida (-1.0 puntos).
+  \item No importe ninguna librerías externas, no las necesita, en caso de hacerlo (-1.0 puntos).
+  \item Si utilizan declaraciones \texttt{break} o \texttt{continue} (-0.2 puntos).
+  \item No preocuparse por validaciones de errores, asuma que los datos se suministran de manera correcta.
+  \item Prestar atención al formato de entrada como al formato de salida para la escritura y presentación del algoritmo.
+\end{enumerate}
+
+
+
+\end{document}
