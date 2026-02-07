@@ -1,0 +1,5 @@
+*.log
+*.aux
+.auctex-auto/
+*.gz
+*.gz

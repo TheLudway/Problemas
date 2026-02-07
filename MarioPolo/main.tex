@@ -1,0 +1,124 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}   % for nice boxes
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+% Increase header height to avoid overlap
+\setlength{\headheight}{40pt}
+
+
+% Move footer up (default ~30pt)
+\setlength{\footskip}{20pt}
+
+% Left header (university and exam info)
+\lhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    Universidad Jorge Tadeo Lozano\\
+    Semillero Segmentation Fault\\
+    Prueba de Programación
+  }%
+}
+
+% Right header (date, professor, monitor)
+\rhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    \textbf{Fecha}: \today
+  }%
+}
+
+% Optional: page number in center footer
+\cfoot{\thepage}
+
+% Paragraph spacing
+\setlength{\parskip}{1em}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+                    fonttitle=\bfseries, breakable]
+  \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+    \hline
+    \textbf{Entrada} & \textbf{Salida} \\
+    \hline
+}{\\ \hline
+  \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+    {\LARGE \bf Mario Polo}\\[1ex]
+    Autor: Ludwig Alvarado
+\end{center}
+
+
+Me llamo Mario Polo, soy un estudiante universitario. Mi madre es una persona que vigila mucho mis notas. Este semestre me dijo que si pasaba las materias de Fundamentos de Programación y Cálculo, entonces me gastaba un almuerzo en Andrés Carne De Res. Como es una oportunidad única de ir a un restaurante tan ``exclusivo'', decidí esforzarme este semestre para esas materias, sin embargo, no me fue tan bien en los dos primeros cortes. Necesito saber cuánto debo sacar en el tercer corte para satisfacer la nota que me pide mi madre y así comer en un restaurante malo pero caro.
+
+En mis clases de cálculo aprendí una fórmula para sacar la nota final de cualquier asignatura:
+
+\[
+N_F = \frac{c_1 + c_2 + c_3}{3}
+\]
+
+Donde \(N_F\) es la nota final de la materia, \(c_1\) es la nota del corte 1, \(c_2\) es la nota del corte 2 y \(c_3\) es la nota del corte 3.
+
+Yo tengo las notas de los dos cortes de ambas materias, también, la nota que espera mi madre para ambas materias. ¿Cuánto necesito sacar en el tercer corte para cada materia y así cumplirle a ella?
+
+
+\subsection*{Entrada del programa}
+
+Mario Polo va a entrar cuatro números:
+
+\begin{itemize}
+  \item \(p_1\): Nota del primer corte de Fundamentos de Programación.
+  \item \(p_2\): Nota del segundo corte de Fundamentos de Programación.
+  \item \(m_1\): Nota del primer corte en Cálculo.
+  \item \(m_2\): Nota del segundo corte en Cálculo.
+\end{itemize}
+
+El último número es la nota que espera la madre en ambas materias.
+
+
+\subsection*{Salida del programa}
+
+Se espera que imprimas las notas que necesita para cada materia Mario Polo, si Mario Polo necesita más de 5.0 para alguna materia, entonces dile que es imposible cumplirle a su madre. Si en ambas materias se necesita una nota menor o igual a 5.0, entonces decirle que sí se puede.
+
+\subsection*{Casos de prueba de ejemplo}
+
+\begin{sample}{1}{}
+\texttt{2.5} \\ \texttt{2.8} \\ \texttt{1.5} \\ \texttt{3.0} \\ \texttt{4.0}  
+&
+Necesitas para programación una nota de \texttt{6.7} y \texttt{7.5} para cálculo y así cumplirle a tu madre. Es imposible que lo logres.
+\end{sample}
+
+\begin{sample}{2}{}
+\texttt{4.0} \\ \texttt{4.0} \\ \texttt{4.0} \\ \texttt{4.0} \\ \texttt{4.0}
+&
+Necesitas para programación una nota de \texttt{4.0} y \texttt{4.0} para cálculo y así cumplirle a tu madre. Es posible que lo logres.
+\end{sample}
+
+
+
+
+
+
+\end{document}
