@@ -1,0 +1,120 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}   % for nice boxes
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+% Increase header height to avoid overlap
+\setlength{\headheight}{40pt}
+
+
+% Move footer up (default ~30pt)
+\setlength{\footskip}{20pt}
+
+% Left header (university and exam info)
+\lhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    Universidad Jorge Tadeo Lozano\\
+    Semillero Segmentation Fault\\
+    Prueba de Programación
+  }%
+}
+
+% Right header (date, professor, monitor)
+\rhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    \textbf{Fecha}: \today
+  }%
+}
+
+% Optional: page number in center footer
+\cfoot{\thepage}
+
+% Paragraph spacing
+\setlength{\parskip}{1em}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+                    fonttitle=\bfseries, breakable]
+  \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+    \hline
+    \textbf{Entrada} & \textbf{Salida} \\
+    \hline
+}{\\ \hline
+  \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+    {\LARGE \bf Cuentas Cafetería}\\[1ex]
+    Autor: Miguel Arevalo
+\end{center}
+
+
+Pablito esta en la cafeteria de la Jorge Tadeo Lozano la cual vende sandwiches de diferente precio, los clientes pueden pedir distinta cantidad de sandwiches sin limite de costo pero hay sandwiches que si cuestan mas de 15000$ tiene un descuento del 20 porciento unicamente si compra mas de 3 sandwiches
+
+La cafeteria le pide ayuda a Pablito para calcular su ingreso final.
+\subsection*{Entrada del programa}
+
+La cafeteria te va a dar \(n\) cantidades de ventas con \(a\) cantidad de productos a \(x\) precio
+
+\subsection*{Salida del programa}
+
+Le debes debes dar el valor final de cada compra ademas del ingreso total.
+
+\subsection*{Caso de prueba de ejemplo}
+
+\begin{sample}{1}{}
+  \texttt{1}
+
+  \texttt{2}
+
+  \texttt{3}
+
+  \texttt{5}
+
+  \texttt{5}
+
+  \texttt{5}
+
+  \texttt{4}
+
+  \texttt{6}
+
+  \texttt{7}
+  
+&
+\texttt{Para el triángulo con lados 1, 2 y 3, no se cumple con la propiedad de desigualdad triangular.}
+
+\texttt{Para el triángulo con lados 5, 5 y 5, se cumple con la propiedad de desigualdad triangular y es equilatero.}
+
+\texttt{Para el triángulo con lados 4, 6 y 7, se cumple con la propiedad de desigualdad triangular y es escaleno.}
+\end{sample}
+
+
+
+
+
+
+
+\end{document}
