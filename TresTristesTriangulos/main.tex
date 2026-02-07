@@ -1,0 +1,133 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}   % for nice boxes
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+% Increase header height to avoid overlap
+\setlength{\headheight}{40pt}
+
+
+% Move footer up (default ~30pt)
+\setlength{\footskip}{20pt}
+
+% Left header (university and exam info)
+\lhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    Universidad Jorge Tadeo Lozano\\
+    Semillero Segmentation Fault\\
+    Prueba de Programación
+  }%
+}
+
+% Right header (date, professor, monitor)
+\rhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    \textbf{Fecha}: \today
+  }%
+}
+
+% Optional: page number in center footer
+\cfoot{\thepage}
+
+% Paragraph spacing
+\setlength{\parskip}{1em}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+                    fonttitle=\bfseries, breakable]
+  \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+    \hline
+    \textbf{Entrada} & \textbf{Salida} \\
+    \hline
+}{\\ \hline
+  \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+    {\LARGE \bf Tres Tristes Triángulos}\\[1ex]
+    Autor: Ludwig Alvarado
+\end{center}
+
+
+Alfredo es un estudiante recién salido del colegio que entró a la Universidad Tecnológica de Algoritmos y Desarrollo en Optimización (UTADEO), se ha estado interesando mucho en la rama de la geometría computacional, sin embargo, ha tenido problemas con su clase de geometría porque su profesor no es muy bueno.
+
+De lo poco que ha aprendido en clase le gustó un teorema de la geometría euclidiana que establece: ``En todo triángulo la suma de las longitudes de dos lados cualesquiera es siempre mayor a la longitud del lado restante''. Alfredo tiene tres longitudes; \(a\), \(b\), \(c\). Teniendo en cuenta este último teorema, él escribe la siguiente propiedad:
+
+\begin{align*}
+  a &< (b + c) \\
+  b &< (a + c) \\
+  c &< (a + b)
+\end{align*}
+
+
+Aunque Alfredo tiene claro el teorema de desigualdad triangular pero aún le cuesta clasificar los triángulos según sus lados (equilátero, isósceles y escaleno).
+
+Tu misión como ayudante en la clase de Geometría es de ayudar a Alfredo clasificando triángulos según sus lados y asegurando que se cumpla el teorema de desigualdad triangular. 
+
+
+\subsection*{Entrada del programa}
+
+Alfredo te va a dar los lados de 3 triángulos, en total, 9 lados; \(a_1, b_1, c_1\) para el primer triángulo, \(a_2, b_2, c_2\) para el segundo triángulo, \(a_3, b_3, c_3\) para el tercer triángulo.
+
+\subsection*{Salida del programa}
+
+Alfredo espera que le des la salida como \texttt{Para el triángulo con lados 2, 2 y 2, se cumple con la propiedad de desigualdad triangular y es equilatero.} Donde los números \texttt{2 2 2} se deben reemplazar por los lados del respectivo triángulo, decir si se cumple la propiedad geométrica y clasificar al triángulo por sus lados.
+
+\subsection*{Caso de prueba de ejemplo}
+
+\begin{sample}{1}{}
+  \texttt{1}
+
+  \texttt{2}
+
+  \texttt{3}
+
+  \texttt{5}
+
+  \texttt{5}
+
+  \texttt{5}
+
+  \texttt{4}
+
+  \texttt{6}
+
+  \texttt{7}
+  
+&
+\texttt{Para el triángulo con lados 1, 2 y 3, no se cumple con la propiedad de desigualdad triangular.}
+
+\texttt{Para el triángulo con lados 5, 5 y 5, se cumple con la propiedad de desigualdad triangular y es equilatero.}
+
+\texttt{Para el triángulo con lados 4, 6 y 7, se cumple con la propiedad de desigualdad triangular y es escaleno.}
+\end{sample}
+
+
+
+
+
+
+
+\end{document}
