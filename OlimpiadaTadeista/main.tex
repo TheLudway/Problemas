@@ -1,0 +1,170 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}   % for nice boxes
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+% Increase header height to avoid overlap
+\setlength{\headheight}{40pt}
+
+
+% Move footer up (default ~30pt)
+\setlength{\footskip}{20pt}
+
+% Left header (university and exam info)
+\lhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    Universidad Jorge Tadeo Lozano\\
+    Semillero Segmentation Fault\\
+    Prueba de Programación
+  }%
+}
+
+% Right header (date, professor, monitor)
+\rhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    \textbf{Fecha}: \today
+  }%
+}
+
+% Optional: page number in center footer
+\cfoot{\thepage}
+
+% Paragraph spacing
+\setlength{\parskip}{1em}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+    fonttitle=\bfseries, breakable]
+    \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+      \hline
+      \textbf{Entrada} & \textbf{Salida} \\
+      \hline
+      }{\\ \hline
+    \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+  {\LARGE \bf Olimpiada Tadeísta}\\[1ex]
+  Autor: Ludwig Alvarado
+\end{center}
+
+
+Se acerca la 56° Olimpiada Tadeísta\footnote{Más información de cómo inscribirse en \url{www.utadeo.edu.co}} y los estudiantes, funcionarios y egresados de la Universidad Jorge Tadeo Lozano están armando grupos para formar parte de esta importante competencia. De entre tantos equipos, un grupo de 4 amigos; Alicia, Bobby, Carlos y Diana, estudiantes de ingeniería de sistemas quieren participar en la categoría de voleibol mixto 4\(\times\)4.
+
+El 20 de marzo inician los torneos y este grupo de amigos quieren llegar preparados para ganar y dejar el nombre de la facultad en alto. Para esto, se reunen todas las tardes en la cancha principal multifuncional de la universidad (al frente del módulo 7A) para organizar una estrategia óptima para los torneos. Después de varios entrenamientos lograron dar con la mejor estrategia teniendo a Bobby y Alicia como principales tiradores, se organizan teniendo en cuenta a quién le llega la pelota:
+
+\begin{itemize}
+  \item Si llega a Alicia, ella se la pasa a Carlos y luego a Bobby.
+  \item Si llega a Carlos, él se la pasa a Diana y luego a Alicia.
+  \item Si llega a Diana, ella se la pasa a Alicia y luego A Bobby.
+  \item Si llega a Bobby, este la termina botando debido a que no sabe hacer pases.
+\end{itemize}
+
+
+En el voleibol solamente se puede tocar la pelota tres veces como máximo antes de realizar el lanzamiento final, por lo tanto, de Bobby y Alicia dependen los lanzamientos. Para este torneo se maneja un formato diferente de puntaje, el primer equipo que anote \(m\) puntos se lleva un set y el puntaje se reinicia a 0.
+
+El grupo de amigos está tan confiado en su estrategia que no va a practicar contra equipos rivales, sin embargo, quieren saber cuántos sets pueden llegar a ganar en un juego. Bobby y Alicia tienen problemas al lanzar; si Bobby llega a ver que el puntaje del equipo está dentro de la sucesión de los números factoriales, entonces, este falla el punto cuando le llega la pelota; si Alicia ve que el puntaje del equipo está dentro de la sucesión de los números naturales, entonces cuando le llegue la pelota ella anota el punto, de lo contrario, falla.
+
+Vas a tener la importante misión de construir un programa que le permita saber al equipo cuántos sets van a ganar junto con el puntaje que anotó Bobby y Alicia.
+
+\subsection*{Entrada del programa}
+
+Vas a recibir una primera línea con \(n (1 \leq n \leq 5\times10^4)\) lanzamientos rivales y \(m (25 \leq m \leq 10^3)\) el puntaje por el cual un equipo logra un set, después vas a recibir \(n\) líneas cada una teniendo la inicial del nombre de los integrantes del equipo (\texttt{A, B, C, D}), recuerda que cada vez que alguien recibe un lanzamiento, este sigue la estrategia pactada por el grupo y el punto depende de las restricciones mencionadas anteriormente.
+
+
+
+\subsection*{Salida del programa}
+
+Deberás imprimir tres líneas; la cantidad de sets que ganó el equipo, puntos totales hechos por Bobby y puntos totales hechos por Alicia. El formato debe ser:
+
+\noindent\texttt{Sets ganados:\\Puntos Bobby:\\Puntos Alicia:}
+
+\subsection*{Caso de prueba de ejemplo}
+
+\begin{sample}{1}{}
+  \texttt{4} \texttt{3}
+
+  \texttt{A}
+
+  \texttt{B}
+
+  \texttt{C}
+
+  \texttt{D}
+
+  &
+  \texttt{Sets ganados: 0}
+
+  \texttt{Puntos Bobby: 1}
+
+  \texttt{Puntos Alicia: 1}
+\end{sample}
+
+\begin{sample}{2}{}
+  \texttt{7} \texttt{2}
+
+  \texttt{C}
+
+  \texttt{A}
+
+  \texttt{C}
+
+  \texttt{D}
+
+  \texttt{C}
+
+  \texttt{C}
+
+  \texttt{D}
+
+  &
+  \texttt{Sets ganados: 1}
+
+  \texttt{Puntos Bobby: 1}
+
+  \texttt{Puntos Alicia: 1}
+\end{sample}
+
+
+
+\subsection*{Notas}
+
+En el primer caso el que equipo recibe 4 balones:
+
+\begin{itemize}
+  \item Alice pasa a Carlos y luego a Bobby que anota un punto.
+  \item Bobby recibe el balón y no puede lanzar, no anota punto.
+  \item Carlos pasa a Diana, llega a Alicia y anota un punto.
+\end{itemize}
+
+
+\subsection*{Aspectos Importantes}
+
+
+
+
+\end{document}
