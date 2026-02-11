@@ -1,0 +1,128 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}   % for nice boxes
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{mwe}
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+% Increase header height to avoid overlap
+\setlength{\headheight}{40pt}
+
+
+% Move footer up (default ~30pt)
+\setlength{\footskip}{20pt}
+
+% Left header (university and exam info)
+\lhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    Universidad Jorge Tadeo Lozano\\
+    Semillero Segmentation Fault\\
+    Prueba de Programación
+  }%
+}
+
+% Right header (date, professor, monitor)
+\rhead{%
+  \parbox[t]{0.48\textwidth}{
+    \small
+    \textbf{Fecha}: \today
+  }%
+}
+
+% Optional: page number in center footer
+\cfoot{\thepage}
+
+% Paragraph spacing
+\setlength{\parskip}{1em}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+    fonttitle=\bfseries, breakable]
+    \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+      \hline
+      \textbf{Entrada} & \textbf{Salida} \\
+      \hline
+      }{\\ \hline
+    \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+  {\LARGE \bf Votación Hexagonal}\\[1ex]
+  Autor: Ludwig Alvarado
+\end{center}
+
+
+Dentro de la Universidad Tecnológica de Algoritmos y Desarrollo Optimizado (UTADEO), se están organizando las próximas elecciones para representantes estudiantiles al consejo directivo, debido a la polémica que hubo el año pasado por un posible fraude, la universidad decidió seleccionar 6 puntos físicos vigilados para que los estudiantes puedan ir a votar (figura~\ref{fig:1}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{example-image}
+  \caption{Puestos de votación disponibles, datos cartográficos de OpenStreetMap}
+  \label{fig:1}
+\end{figure}
+
+
+Debido a que este año la universidad asignó un presupuesto mucho mayor, te contrataron a ti como programador para mostrar los resultados de las elecciones, distancia del puesto de votación más lejano al origen, y el Índice Energético de Votación (IEV) definido como:
+
+\[
+IEV = \text{puesto con mayor número de votos}!
+\]
+
+Para este año se postularon 3 estudiantes para ser el nuevo representante al consejo directivo de la universidad, ellos son; Andrea, Bobby y Claudia. 
+
+
+\subsection*{Entrada del programa}
+
+Vas a recibir 6 líneas de datos, en cada línea vas a encontrar las coordenadas \((x, y)\) de cada puesto de votación con respecto al origen \((0, 0)\) seguido de la cantidad de votos que tuvo Andrea, Bobby y Claudia en esa mesa de votación.
+
+
+
+\subsection*{Salida del programa}
+
+Se deben imprimir el total de votos de todas las mesas de votación, la cantidad de votos que tuvo cada candidato en todas las mesas, el porcentaje de votos de cada candidado, la mesa más lejana al origen y el IEV del puesto de votación con más votos recogidos. 
+
+
+Se debe seguir el siguiente formato:
+
+
+\noindent\texttt{Total Votos: \#numeroVotos\\Votos Andrea: \#votos \#porcentaje\\Votos Bobby: \#votos \#porcentaje\\Votos Claudia: \#votos \#porcentaje\\Mesa más lejana: \#numeroMesa \#distancia\\IEV: \#numeroMesa \#valorIEV}
+
+\subsection*{Caso de prueba de ejemplo}
+
+\textbf{TODO}
+
+
+
+\subsection*{Notas}
+
+\textbf{TODO}
+
+
+\subsection*{Aspectos Importantes}
+
+
+\textbf{TODo}
+
+\end{document}
