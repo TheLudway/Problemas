@@ -10,11 +10,54 @@
 \usepackage{titlesec}
 \usepackage{tcolorbox}   % for nice boxes
 \tcbuselibrary{listings,skins,breakable}
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
 \usepackage{float}
 \usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 \usepackage{mwe}
+\usepackage[spanish]{babel}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{gray!5},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{teal},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+  captionpos=b,
+  keepspaces=true
+}
+
+\lstdefinestyle{pythonshell}{
+  language=Python,
+  backgroundcolor=\color{black!95},
+  basicstyle=\ttfamily\small\color{green!80!white},
+  keywordstyle=\color{cyan},
+  commentstyle=\color{gray},
+  stringstyle=\color{yellow!80!white},
+  numbers=none,
+  frame=single,
+  rulecolor=\color{black!95},
+  breaklines=true,
+  showstringspaces=false,
+  moredelim=[is][\color{white}]{§}{§}, % allows white output sections
+}
+
+
+
 
 % --- Formatting ---
 \pagestyle{fancy}
@@ -26,21 +69,26 @@
 % Move footer up (default ~30pt)
 \setlength{\footskip}{20pt}
 
+% Identation
+\setlength{\parindent}{0pt}
+
 % Left header (university and exam info)
-\lhead{%
+\rhead{%
   \parbox[t]{0.48\textwidth}{
     \small
     Universidad Jorge Tadeo Lozano\\
-    Semillero Segmentation Fault\\
-    Prueba de Programación
+    Estructuras de Datos - Grupo 2\\
+    Prueba de Programación 
   }%
 }
 
 % Right header (date, professor, monitor)
-\rhead{%
+\lhead{%
   \parbox[t]{0.48\textwidth}{
     \small
-    \textbf{Fecha}: \today
+    \textbf{Fecha}: \today \\
+    \textbf{Profesor:} Alejandro Franco \\
+    \textbf{Monitor:} Ludwig Alvarado
   }%
 }
 
@@ -74,12 +122,12 @@
 \end{center}
 
 
-Dentro de la Universidad Tecnológica de Algoritmos y Desarrollo Optimizado (UTADEO), se están organizando las próximas elecciones para representantes estudiantiles al consejo directivo, debido a la polémica que hubo el año pasado por un posible fraude, la universidad decidió seleccionar 6 puntos físicos vigilados para que los estudiantes puedan ir a votar (figura~\ref{fig:1}).
+Dentro de la Universidad Tecnológica de Algoritmos y Desarrollo Optimizado (UTADEO), se están organizando las próximas elecciones para representantes estudiantiles al consejo directivo. Debido a la polémica que hubo el año pasado por un posible fraude, la universidad decidió seleccionar 6 puntos físicos vigilados para que los estudiantes puedan ir a votar que se pueden ver en la figura~\ref{fig:1}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{example-image}
-  \caption{Puestos de votación disponibles, datos cartográficos de OpenStreetMap}
+  \includegraphics[width=0.6\textwidth]{img/Mapa.png}
+  \caption{Puestos de votación disponibles, datos cartográficos de OpenStreetMap, edición por autoría propia.}
   \label{fig:1}
 \end{figure}
 
@@ -87,21 +135,19 @@ Dentro de la Universidad Tecnológica de Algoritmos y Desarrollo Optimizado (UTA
 Debido a que este año la universidad asignó un presupuesto mucho mayor, te contrataron a ti como programador para mostrar los resultados de las elecciones, distancia del puesto de votación más lejano al origen, y el Índice Energético de Votación (IEV) definido como:
 
 \[
-IEV = \text{puesto con mayor número de votos}!
+  IEV = \lceil \sqrt[3]{V} \rceil !
 \]
 
-Para este año se postularon 3 estudiantes para ser el nuevo representante al consejo directivo de la universidad, ellos son; Andrea, Bobby y Claudia. 
+Donde \(V\) es la cantidad de votos totales en una mesa de votación. Para este año se postularon 3 estudiantes para ser el nuevo representante al consejo directivo de la universidad, ellos son; Andrea (\(A\)), Bobby (\(B\)) y Claudia (\(C\)). 
 
 
 \subsection*{Entrada del programa}
 
-Vas a recibir 6 líneas de datos, en cada línea vas a encontrar las coordenadas \((x, y)\) de cada puesto de votación con respecto al origen \((0, 0)\) seguido de la cantidad de votos que tuvo Andrea, Bobby y Claudia en esa mesa de votación.
-
-
+Vas a recibir 6 líneas de datos, en cada línea vas a encontrar las coordenadas \((x, y), \ (-1000 < x, y < 1000)\) de cada puesto de votación con respecto al origen \((0, 0)\) seguido de la cantidad de votos que tuvo Andrea, Bobby y Claudia en esa mesa de votación, (\(1 \leq A, B, C \leq 500\)).
 
 \subsection*{Salida del programa}
 
-Se deben imprimir el total de votos de todas las mesas de votación, la cantidad de votos que tuvo cada candidato en todas las mesas, el porcentaje de votos de cada candidado, la mesa más lejana al origen y el IEV del puesto de votación con más votos recogidos. 
+Se deben imprimir el total de votos de todas las mesas de votación, la cantidad de votos que tuvo cada candidato en todas las mesas, el porcentaje de votos de cada candidado, la mesa más lejana al origen y el IEV del puesto de votación con más votos recogidos.
 
 
 Se debe seguir el siguiente formato:
@@ -111,18 +157,58 @@ Se debe seguir el siguiente formato:
 
 \subsection*{Caso de prueba de ejemplo}
 
-\textbf{TODO}
+\begin{sample}{1}{}
+  \texttt{-1 -1 78 50 90}
 
+  \texttt{5 -1 100 90 115}
+
+  \texttt{3 7 20 15 10}
+
+  \texttt{0 8 40 55 30}
+
+  \texttt{-2 11 470 450 370}
+
+  \texttt{-7 2 90 95 80}
+
+  &
+
+  \texttt{Total Votos: 2248}
+
+  \texttt{Votos Andrea: 798 35.5\%}
+
+  \texttt{Votos Bobby: 755 33.59\%}
+
+  \texttt{Votos Claudia: 695 30.92\%}
+
+  \texttt{Mesa más lejana: 5 11.18}
+
+  \texttt{IEV: 5 39916800}
+\end{sample}
 
 
 \subsection*{Notas}
 
-\textbf{TODO}
+La mesa de votación que tuvo más votos fue la número 5 con un total de 1290. Al sacar la raíz cúbica se obtiene \(\sqrt[3]{1290} \approx 10.8858...\), al aplicar la función techo, es decir: \(\lceil \sqrt[3]{1290} \rceil = 11\), al aplicar el factorial de este último número se obtiene el IEV: \(11!=39916800\).
 
 
 \subsection*{Aspectos Importantes}
 
+\begin{enumerate}
+  \item La prueba se resolverá en \textbf{2 momentos}: primero en papel, sin editor de código (\textbf{valdrá 3.0 puntos}). Segundo, pasará el algoritmo desarrollando en papel al editor de código (\textbf{valdrá 2.0 puntos}).
+  \item Hagan uso de los conceptos aprendidos hasta el tema de \textbf{ciclos}.
+  \item Los datos están insertados como un string, puede hacer uso de la función \texttt{split()} para obtener la información relevante, por ejemplo, si quiero guardar en tres variables diferentes la cadena \texttt{1 2 3}, puedo hacer:
+        \begin{lstlisting}[style=pythonstyle]
+>>> x, y, z = map(int, input().split())
+>>> print(x, y, z)
+1 2 3
+        \end{lstlisting}
+  \item Puede hacer el uso de las funciones \texttt{ceil} y \texttt{cbrt} (raíz cúbica) del módulo \texttt{math}, además de \texttt{round()}.        
+  \item Si tienen dudas con respecto al uso de funciones pregunten al profesor si es permitida, de lo contrario si la usa y no es permitida (-1.0 puntos).
+  \item No importe ninguna librerías externas, no las necesita, en caso de hacerlo (-1.0 puntos).
+  \item No preocuparse por validaciones de errores, asuma que los datos se suministran de manera correcta.
+  \item Prestar especial atención al formato de entrada y al formato de salida. Cualquier diferencia respecto al formato de salida especificado se considerará como prueba fallida.
+\end{enumerate}
 
-\textbf{TODo}
+
 
 \end{document}
