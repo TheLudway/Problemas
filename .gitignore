@@ -1,10 +1,15 @@
+# LaTeX stuff
 *.log
 *.aux
 .auctex-auto/
 *.gz
 *.gz
+*.out
+*.bcf
+*.xml
+
+# Python and problem solving stuff
 *.py
 in
 out
 ans
-*.out

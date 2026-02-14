@@ -38,7 +38,8 @@
   frame=single,
   rulecolor=\color{gray!40},
   captionpos=b,
-  keepspaces=true
+  keepspaces=true,
+  morekeywords={ceil,cbrt,round,split},
 }
 
 \lstdefinestyle{pythonshell}{
@@ -196,13 +197,13 @@ La mesa de votación que tuvo más votos fue la número 5 con un total de 1290. 
 \begin{enumerate}
   \item La prueba se resolverá en \textbf{2 momentos}: primero en papel, sin editor de código (\textbf{valdrá 3.0 puntos}). Segundo, pasará el algoritmo desarrollando en papel al editor de código (\textbf{valdrá 2.0 puntos}).
   \item Hagan uso de los conceptos aprendidos hasta el tema de \textbf{ciclos}.
-  \item Los datos están insertados como un string, puede hacer uso de la función \texttt{split()} para obtener la información relevante, por ejemplo, si quiero guardar en tres variables diferentes la cadena \texttt{1 2 3}, puedo hacer:
+  \item Los datos están insertados como un string, puede hacer uso de la función \lstinline[style=pythonstyle]|split()| para obtener la información relevante, por ejemplo, si quiero guardar en tres variables diferentes la cadena \texttt{1 2 3}, puedo hacer:
         \begin{lstlisting}[style=pythonstyle]
 >>> x, y, z = map(int, input().split())
 >>> print(x, y, z)
 1 2 3
         \end{lstlisting}
-  \item Puede hacer el uso de las funciones \texttt{ceil} y \texttt{cbrt} (raíz cúbica) del módulo \texttt{math}, además de \texttt{round()}.        
+  \item Puede hacer el uso de las funciones \lstinline[style=pythonstyle]|ceil()| y \lstinline[style=pythonstyle]|cbrt()| (raíz cúbica) del módulo \lstinline[style=pythonstyle]|math|, además de \lstinline[style=pythonstyle]|round()|.        
   \item Si tienen dudas con respecto al uso de funciones pregunten al profesor si es permitida, de lo contrario si la usa y no es permitida (-1.0 puntos).
   \item No importe ninguna librerías externas, no las necesita, en caso de hacerlo (-1.0 puntos).
   \item No preocuparse por validaciones de errores, asuma que los datos se suministran de manera correcta.
