@@ -3,3 +3,7 @@
 .auctex-auto/
 *.gz
 *.gz
+*.py
+in
+out
+ans
