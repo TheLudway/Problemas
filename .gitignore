@@ -7,6 +7,12 @@
 *.out
 *.bcf
 *.xml
+*.bbl
+*.blg
+*.lof
+*.lot
+*.toc
+svg-inkscape/
 
 # Python and problem solving stuff
 *.py
