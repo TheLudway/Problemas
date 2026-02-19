@@ -1,53 +1,73 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 
 % --- Packages ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
-\geometry{margin=2.5cm}
+\geometry{margin=2cm}
 \usepackage{array}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage{tcolorbox}   % for nice boxes
+\usepackage{tcolorbox}
 \tcbuselibrary{listings,skins,breakable}
 \usepackage{amsmath,amssymb}
 \usepackage{float}
 \usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[spanish]{babel}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{gray!5},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{teal},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+  captionpos=b,
+  keepspaces=true,
+  morekeywords={ceil,cbrt,round,split},
+}
+
 
 % --- Formatting ---
 \pagestyle{fancy}
 \fancyhf{}
-% Increase header height to avoid overlap
-\setlength{\headheight}{40pt}
-
-
-% Move footer up (default ~30pt)
+\setlength{\headheight}{30pt}
 \setlength{\footskip}{20pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
 
 % Left header (university and exam info)
-\lhead{%
-  \parbox[t]{0.48\textwidth}{
-    \small
-    Universidad Jorge Tadeo Lozano\\
-    Semillero Segmentation Fault\\
-    Prueba de Programación
-  }%
+\rhead{%
+   \small
+   Universidad Jorge Tadeo Lozano\\
+   Estructuras de Datos - Grupo 2\\
+   Prueba de Programación 
 }
 
 % Right header (date, professor, monitor)
-\rhead{%
-  \parbox[t]{0.48\textwidth}{
-    \small
-    \textbf{Fecha}: \today
-  }%
+\lhead{%
+   \small
+   \textbf{Fecha}: 18 de febrero de 2026 \\
+   \textbf{Profesor:} Alejandro Franco \\
+   \textbf{Monitor:} Ludwig Alvarado
 }
 
-% Optional: page number in center footer
 \cfoot{\thepage}
-
-% Paragraph spacing
-\setlength{\parskip}{1em}
 
 \titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
 
@@ -84,85 +104,212 @@ El 20 de marzo inician los torneos y este grupo de amigos quieren llegar prepara
   \item Si llega a Bobby, este la termina botando debido a que no sabe hacer pases.
 \end{itemize}
 
+\begin{figure}[H]
+    \centering
+    
+    \begin{subfigure}[b]{0.28\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/E1.png}
+        \caption{Bola llega a Alicia}
+    \end{subfigure}
+    \hspace{0.03\textwidth}
+    \begin{subfigure}[b]{0.28\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/E2.png}
+        \caption{Bola llega a Carlos}
+    \end{subfigure}
+
+    \vspace{0.2cm}
+
+    \begin{subfigure}[b]{0.28\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/E3.png}
+        \caption{Bola llega a Diana}
+    \end{subfigure}
+    \hspace{0.03\textwidth}
+    \begin{subfigure}[b]{0.28\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/E4.png}
+        \caption{Bola llega a Bobby}
+    \end{subfigure}
+    
+    \caption{Diferentes estrategias cuando llega el balón a cada persona.}
+\end{figure}
+
 
 En el voleibol solamente se puede tocar la pelota tres veces como máximo antes de realizar el lanzamiento final, por lo tanto, de Bobby y Alicia dependen los lanzamientos. Para este torneo se maneja un formato diferente de puntaje, el primer equipo que anote \(m\) puntos se lleva un set y el puntaje se reinicia a 0.
 
-El grupo de amigos está tan confiado en su estrategia que no va a practicar contra equipos rivales, sin embargo, quieren saber cuántos sets pueden llegar a ganar en un juego. Bobby y Alicia tienen problemas al lanzar; si Bobby llega a ver que el puntaje del equipo está dentro de la sucesión de los números factoriales, entonces, este falla el punto cuando le llega la pelota; si Alicia ve que el puntaje del equipo está dentro de la sucesión de los números naturales, entonces cuando le llegue la pelota ella anota el punto, de lo contrario, falla.
+El grupo de amigos está tan confiado en su estrategia que no va a practicar contra equipos rivales, sin embargo, quieren saber cuántos sets pueden llegar a ganar en un juego. Pese a ello, Bobby y Alicia tienen algunos problemas al lanzar:
 
-Vas a tener la importante misión de construir un programa que le permita saber al equipo cuántos sets van a ganar junto con el puntaje que anotó Bobby y Alicia.
+\begin{itemize}
+  \item Si Bobby recibe el balón para lanzar y el puntaje actual del equipo
+        es un número dentro de la serie del factorial empezando desde \(2!\), entonces falla el punto.
+        En caso contrario, anota.
+  \item Si Alicia recibe el balón para lanzar, ella únicamente anota
+        cuando la suma de los dígitos del puntaje actual del equipo es un número par.
+        Si la suma de los dígitos es impar, falla.
+\end{itemize}
+
+\textbf{Importante:} El puntaje que se debe evaluar es el puntaje actual del equipo antes de sumar el posible punto.
+
+Vas a tener la importante misión de construir un programa que le permita saber al equipo cuántas veces cada miembro del equipo tocó la pelota durante todos los lanzamientos, cuántos sets van a ganar, el puntaje que anotó Bobby y Alicia.
 
 \subsection*{Entrada del programa}
 
 Vas a recibir una primera línea con \(n (1 \leq n \leq 5\times10^4)\) lanzamientos rivales y \(m (25 \leq m \leq 10^3)\) el puntaje por el cual un equipo logra un set, después vas a recibir \(n\) líneas cada una teniendo la inicial del nombre de los integrantes del equipo (\texttt{A, B, C, D}), recuerda que cada vez que alguien recibe un lanzamiento, este sigue la estrategia pactada por el grupo y el punto depende de las restricciones mencionadas anteriormente.
 
-
-
 \subsection*{Salida del programa}
 
-Deberás imprimir tres líneas; la cantidad de sets que ganó el equipo, puntos totales hechos por Bobby y puntos totales hechos por Alicia. El formato debe ser:
+Deberás imprimir siete líneas en el siguiente orden:
+\begin{enumerate}
+  \item Cantidad de veces que Alicia tocó la pelota
+  \item Cantidad de veces que Bobby tocó la pelota
+  \item Cantidad de veces que Carlos tocó la pelota
+  \item Cantidad de veces que Diana tocó la pelota
+  \item Cantidad de sets que ganó el equipo
+  \item Puntos totales hechos por Bobby
+  \item Puntos totales hechos por Alicia
+\end{enumerate}
 
-\noindent\texttt{Sets ganados:\\Puntos Bobby:\\Puntos Alicia:}
+El formato debe ser:
+
+\noindent\texttt{Toques Alicia:\\Toques Bobby:\\Toques Carlos:\\Toques Diana:\\Sets ganados:\\Puntos Bobby:\\Puntos Alicia:}
 
 \subsection*{Caso de prueba de ejemplo}
 
 \begin{sample}{1}{}
   \texttt{4} \texttt{3}
 
-  \texttt{A}
+  \texttt{A} % 1 bobby, +1A +1C +1B
 
-  \texttt{B}
+  \texttt{B} % lo falla, +1B
 
-  \texttt{C}
+  \texttt{C} % Alicia falla, +1C +1D +1A
 
-  \texttt{D}
+  \texttt{D} % 1 bobby, +1D +1A +1B
 
   &
   \texttt{Sets ganados: 0}
 
-  \texttt{Puntos Bobby: 1}
+  \texttt{Puntos Bobby: 2}
 
-  \texttt{Puntos Alicia: 1}
+  \texttt{Puntos Alicia: 0}
+
+  \texttt{Toques Alicia: 3}
+
+  \texttt{Toques Bobby: 3}
+
+  \texttt{Toques Carlos: 2}
+
+  \texttt{Toques Diana: 2}
 \end{sample}
 
 \begin{sample}{2}{}
   \texttt{7} \texttt{2}
 
-  \texttt{C}
+  \texttt{C} % +1 A, +1C +1D +1A
 
-  \texttt{A}
+  \texttt{A} % +1 B, +1s, +1A +1C +1B
 
-  \texttt{C}
+  \texttt{C} % +1 A, +1C +1D +1A
 
-  \texttt{D}
+  \texttt{D} % +1 B, +1s, +1D +1A +1B
 
-  \texttt{C}
+  \texttt{C} % +1 A, +1C +1D +1A
 
-  \texttt{C}
+  \texttt{C} % Alicia falla, +1C +1D +1A
 
-  \texttt{D}
+  \texttt{D} % +1 B, +1s, +1D +1A +1B
 
   &
-  \texttt{Sets ganados: 1}
+  \texttt{Sets ganados: 3}
 
-  \texttt{Puntos Bobby: 1}
+  \texttt{Puntos Bobby: 3}
 
-  \texttt{Puntos Alicia: 1}
+  \texttt{Puntos Alicia: 3}
+
+  \texttt{Toques Alicia: 7}
+
+  \texttt{Toques Bobby: 3}
+
+  \texttt{Toques Carlos: 5}
+
+  \texttt{Toques Diana: 6}
 \end{sample}
 
 
 
 \subsection*{Notas}
 
-En el primer caso el que equipo recibe 4 balones:
+\begin{itemize}
+  \item Cada línea de entrada indica quién recibe inicialmente el balón.
+  \item A partir de allí se deben realizar exactamente los pases indicados
+        hasta que el balón llegue a Bobby o Alicia.
+  \item Solo Bobby o Alicia pueden finalizar la jugada.
+  \item \textbf{Conteo de toques:} Cada vez que un jugador toca el balón (ya sea
+        recibiéndolo o en el proceso de pases), se cuenta como un toque. Por ejemplo,
+        si recibe Carlos (C), la secuencia es Carlos $\to$ Diana $\to$ Alicia,
+        entonces Carlos, Diana y Alicia tocan la pelota una vez cada uno en ese lanzamiento.
+  \item El puntaje que se evalúa es el puntaje actual antes de sumar el posible punto.
+  \item Si el equipo alcanza exactamente $m$ puntos:
+        \begin{itemize}
+            \item Se incrementa en 1 la cantidad de sets ganados.
+            \item El puntaje del set se reinicia a 0.
+        \end{itemize}
+  \item Los lanzamientos continúan hasta procesar las $n$ entradas.
+\end{itemize}
+
+En el primer caso de ejemplo:
 
 \begin{itemize}
-  \item Alice pasa a Carlos y luego a Bobby que anota un punto.
-  \item Bobby recibe el balón y no puede lanzar, no anota punto.
-  \item Carlos pasa a Diana, llega a Alicia y anota un punto.
+  \item A: Alicia recibe, pasa a Carlos y luego a Bobby (tocan: A, C, B).
+        Puntaje actual = 0.
+        0 no es factorial (\(\geq 2\)), entonces Bobby anota.
+        Nuevo puntaje: 1.
+  \item B: Bobby recibe directamente (toca: B).
+        Puntaje actual = 1. Cuando Bobby recibe la pelota, este falla, se mantiene el puntaje.
+  \item C: Carlos recibe, pasa a Diana y luego a Alicia (tocan: C, D, A).
+        Puntaje actual = 1.
+        Suma de dígitos: 1 (impar), entonces Alicia no anota.
+        Nuevo puntaje: 1.
+  \item D: Diana recibe, pasa a Alicia y luego a Bobby (tocan: D, A, B).
+        Puntaje actual = 1.
+        1 no es factorial (\(\geq 2\)), entonces Bobby anota.
+        Nuevo puntaje: 2.
 \end{itemize}
+
+Puntos totales: Bobby anotó 2 veces (lanzamientos A y D), Alicia no anotó ninguna vez.
+
+Toques totales: Alicia tocó 3 veces (lanzamientos A, C, D), Bobby tocó 3 veces (A, B, D), Carlos tocó 2 veces (A, C), Diana tocó 2 veces (C, D).
 
 
 \subsection*{Aspectos Importantes}
+
+\begin{enumerate}
+  \item La prueba se resolverá en \textbf{2 momentos}:
+        \begin{itemize}
+            \item Desarrollo del algoritmo en papel \textbf{(3.0 puntos)}.
+            \item Implementación en el editor de código \textbf{(2.0 puntos)}.
+        \end{itemize}
+
+  \item Los datos de la primera línea están insertados como un string, puede hacer uso de la función \lstinline[style=pythonstyle]|split()| para obtener la información relevante, por ejemplo, si quiero guardar en tres variables diferentes la cadena \texttt{1 2 3}, puedo hacer:
+        \begin{lstlisting}[style=pythonstyle]
+>>> x, y, z = map(int, input().split())
+>>> print(x, y, z)
+1 2 3
+        \end{lstlisting}
+
+  \item Este ejercicio evalúa los temas vistos hasta \textbf{ciclos}.
+
+  \item No es necesario usar estructuras de datos avanzadas ni importar librerías externas.
+
+  \item No es necesario validar errores de entrada.
+
+  \item La única conversión de tipo de datos debe ser al momento de la lectura de los mismos. No es necesario volver a convertir el tipo de dato de las variables.
+
+  \item El formato de salida debe coincidir exactamente con el especificado. Cualquier diferencia será considerada incorrecta.
+\end{enumerate}
+
 
 
 
