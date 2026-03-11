@@ -1,0 +1,189 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[spanish]{babel}
+\usepackage{mwe}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{gray!5},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{teal},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+  captionpos=b,
+  keepspaces=true,
+  morekeywords={ceil,cbrt,round,split},
+}
+
+\hypersetup{
+    pdftitle={Template Ejercicio Programación},
+    pdfauthor={Ludwig Alvarado},
+    pdfsubject={Aquí va un ejercicio de programación en formato ICPC},
+    pdfkeywords={programación competitiva},
+    pdfcreator={GNU Emacs desde Arch (btw) GNU/Linux y LaTeX con hyperref},
+    pdfproducer={pdflatex}
+}
+
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{30pt}
+\setlength{\footskip}{20pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+% Left header (university and exam info)
+\rhead{%
+   \small
+   Universidad Jorge Tadeo Lozano\\
+   Estructuras de Datos - Grupo 2\\
+   Prueba de Programación 
+}
+
+% Right header (date, professor, monitor)
+\lhead{%
+   \small
+   \textbf{Fecha}: \today \\
+   \textbf{Profesor:} Nombre profesor asignatura \\
+   \textbf{Monitor:} Nombre monitor asignatura
+}
+
+\cfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+    fonttitle=\bfseries, breakable]
+    \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+      \hline
+      \textbf{Entrada} & \textbf{Salida} \\
+      \hline
+      }{\\ \hline
+    \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+  {\LARGE \bf Título del ejercicio}\\[1ex]
+  Autor: Nombre del autor del ejercicio
+\end{center}
+
+
+Aquí va el enunciado del problema, normalmente se trata de un tema de la U para que sea más interesante y que el estudiante tenga una pertenencia institucional, es decir, que se sienta parte de la U. El tema puede ser de cosas deporte, cabito, museo del mar, todo lo relacionado a la U.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image}
+    \caption{Se pueden insertar imágenes también en esta sección, se deben guardar dentro del directorio \texttt{img/}}
+    \label{fig:sample}
+\end{figure}
+
+
+Aquí se puede mencionar más detales del ejercicio, el primer párrafo suele utilizarse para la ``parla'' y aquí más detalles del problema.
+
+\subsection*{Entrada del programa}
+
+En esta sección se debe colocar lo que le van a ingresar al estudiante en el programa, se debe colocar el tipo de dato, qué significa dentro del problema y las restricciones numéricas del problema, por ejemplo: Al programa van a entrar dos números enteros \(x (1 \leq x \leq 10)\) y  \(y (1 \leq y \leq 10)\) separados por un espacio, el programa deberá de parar leer números hasta cuando ambos números sean 0. De esta manera, el estudiante sabe qué tipo de dato debe asignar para la variable y también implementar su lógica para que el problema pase las restricciones de tiempo.
+
+\subsection*{Salida del programa}
+
+Aquí se le dice al estudiante cómo debe ser la salida del programa, es decir, lo que se debe mostrar en pantalla, tomando el ejemplo anterior de los dos números se puede continuar: Debes imprimir únicamente la suma de ambos números y una nueva línea, la entrada de \texttt{0 0} no debe ser procesada. 
+
+\subsection*{Caso de prueba de ejemplo}
+
+Aquí se muestra algunos casos de ejemplo para darle un contexto más detallado al estudiante, todo debe corresponder a como se describe en las secciones de entrada y salida del programa.
+
+\begin{sample}{1}{}
+  \texttt{2} \texttt{3}
+
+  \texttt{4} \texttt{10}
+
+  \texttt{1} \texttt{1}
+
+  \texttt{0} \texttt{0}
+
+  &
+  \texttt{5}
+
+  \texttt{14}
+
+  \texttt{2}
+
+\end{sample}
+
+Se recomienda agregar de entre 1 y 3 casos para que el estudiante tenga un mejor contexto. 
+
+\subsection*{Notas}
+
+Si es necesario, en esta sección se explica un poco los casos de prueba de ejemplo, por ejemplo: En el caso de prueba 1, el valor que toma \(x\) es 2 y \(y\) es 3, al sumar ambos números el resultado es \texttt{5}. 
+
+Se puede ser muy general explicando los casos de prueba o también muy detallado.
+
+\subsection*{Aspectos Importantes}
+
+Aquí se explican temas de cómo será evaluada la prueba, los puntos normales normalmente son:
+
+\begin{enumerate}
+  \item La prueba se resolverá en \textbf{2 momentos}:
+        \begin{itemize}
+            \item Desarrollo del algoritmo en papel \textbf{(3.0 puntos)}.
+            \item Implementación en el editor de código \textbf{(2.0 puntos)}.
+        \end{itemize}
+
+  \item Los datos de la primera línea están insertados como un string, puede hacer uso de la función \lstinline[style=pythonstyle]|split()| para obtener la información relevante, por ejemplo, si quiero guardar en tres variables diferentes la cadena \texttt{1 2 3}, puedo hacer:
+        \begin{lstlisting}[style=pythonstyle]
+>>> x, y, z = map(int, input().split())
+>>> print(x, y, z)
+1 2 3
+        \end{lstlisting}
+
+  \item Este ejercicio evalúa los temas vistos hasta \textbf{ciclos}.
+
+  \item No es necesario usar estructuras de datos avanzadas ni importar librerías externas.
+
+  \item No es necesario validar errores de entrada.
+
+  \item La única conversión de tipo de datos debe ser al momento de la lectura de los mismos. No es necesario volver a convertir el tipo de dato de las variables.
+
+  \item El formato de salida debe coincidir exactamente con el especificado. Cualquier diferencia será considerada incorrecta.
+\end{enumerate}
+
+
+
+
+
+\end{document}
