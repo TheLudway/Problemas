@@ -1,0 +1,207 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[english]{babel}
+\usepackage{mwe}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{gray!5},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{teal},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+  captionpos=b,
+  keepspaces=true,
+  morekeywords={ceil,cbrt,round,split,index},
+}
+
+\hypersetup{
+    pdftitle={Andrew The Terrible},
+    pdfauthor={Ludwig Alvarado},
+    pdfsubject={Maybe Andrew isn't too bad},
+    pdfkeywords={data structures and algorithms},
+    pdfcreator={GNU Emacs desde Arch (btw) GNU/Linux y LaTeX con hyperref},
+    pdfproducer={pdflatex}
+}
+
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{30pt}
+\setlength{\footskip}{20pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+% Left header (university and exam info)
+\rhead{%
+   \small
+   University Jorge Tadeo Lozano\\
+   Data Structures - Group 2\\
+   Programming Test 
+}
+
+% Right header (date, professor, monitor)
+\lhead{%
+   \small
+   \textbf{Date}: \today \\
+   \textbf{Professor:} José Alejandro Franco Calderón \\
+   \textbf{Assitant:} Ludwig Alvarado Becerra
+}
+
+\cfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+    fonttitle=\bfseries, breakable]
+    \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+      \hline
+      \textbf{Input} & \textbf{Output} \\
+      \hline
+      }{\\ \hline
+    \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+  {\LARGE \bf Andrew the Terrible}\\[1ex]
+  Author: Ludwig Alvarado
+\end{center}
+
+In the Computing Academy for Binary Infrastructure, Technology, and Operations (CABITO), Andrew Alaxair has just won the recent elections and begun his second term. Throughout his political career, he has been known for frequent disputes with other candidates, which earned him the nickname ``Andrew the Terrible''. Despite strong opposition, Andrew secured another victory. Upon returning to office, his first priority is to conceal the financial corruption within his friends among different departments. To accomplish this, he hires you, the best computer engineer at the Ultimate Tech Agency for Debugging Every Obstacle (UTADEO), to help solve the problem. 
+
+Andrew’s friends are spread across different departments in the academy. In each department, Andrew has access to the financial reports of every employee, whether they are his friends or his enemies. You can identify Andrew’s friend in a department because they have the highest financial report there.
+
+Your task is to swap the financial report of Andrew’s friend (the maximum value in the list) with the value at an index that Andrew gives you. If Andrew is unsure about the index, you must instead swap it with the employee who has the smallest financial report in the list.
+
+
+\subsection*{Program input}
+
+Andrew will give you several test cases. In the first line of each case, he provides an integer \(n (0 \leq n \leq 50)\) representing the number of departments.
+
+For each of the next \(n\) departments, Andrew will enter:
+
+\begin{itemize}
+  \item a string \(s (3 \leq |s| \leq 15)\) representing the name of the department,
+  \item an integer \(m (2 \leq m \leq 10^4)\), the number of employees in that department,
+  \item and an integer \(I (-1 \leq I \leq m-1)\), the index of the employee whose financial report will be swapped with Andrew’s friend.  
+\end{itemize}
+
+The next line contains a list of \(m\) integers \(a_i (0 \leq i \leq m-1)\), representing the financial report of each employee in the department.
+
+You must continue processing cases until Andrew gives \(n = 0\).
+
+When Andrew gives you \(I = -1\) means that he is unsure about which one to swap, so you must swap Andrew's friend with the empoyee with the lowest financial report in the list. 
+
+\subsection*{Program output}
+
+For each department, print the department name on one line. On the next line, print the complete list of financial reports after performing the required swap with a space between values. Example:
+
+\texttt{AVerySeriousDepartmentName:}
+
+\texttt{4 5 2 30 3 4 5 6 \dots 2}
+
+\subsection*{Sample test cases}
+
+\begin{sample}{1}{}
+\texttt{1}
+
+\texttt{Finance 5 0}
+
+\texttt{10 25 30 5 12}
+
+\texttt{2}
+
+\texttt{Research 4 -1}
+
+\texttt{7 14 3 20}
+
+\texttt{Geography 6 3}
+
+\texttt{1 9 3 10 20 12}
+
+\texttt{0}
+&
+\texttt{Finance:}
+
+\texttt{30 25 10 5 12}
+
+\texttt{Research:}
+
+\texttt{7 14 20 3}
+
+\texttt{Geography:}
+
+\texttt{1 9 3 20 10 12}
+
+\end{sample}
+ 
+
+\subsection*{Notes}
+
+In the first case there is only one department, \texttt{Finance} with \texttt{5} employees; number 0 with a financial report of 10, number 1 with 25, number 2 with 30, number 3 with 5 and, number 4 with 12. Andrew's friend is employee number 2 because it has the highest financial report (due to corruption). Andrew also told you to switch the financial report with employee 0, so the final list of the department will be \texttt{30 25 10 5 12}.
+
+\subsection*{Important aspects}
+
+\begin{enumerate}
+  \item La prueba se resolverá en \textbf{2 momentos}:
+        \begin{itemize}
+            \item Desarrollo del algoritmo en papel \textbf{(3.0 puntos)}.
+            \item Implementación en el editor de código \textbf{(2.0 puntos)}.
+        \end{itemize}
+
+  \item Los datos de la segunda línea están insertados como un string, puede hacer uso de la función \lstinline[style=pythonstyle]|split()| para obtener la información relevante, por ejemplo, si quiero guardar en una lista la cadena \texttt{1 2 3}, puedo hacer:
+        \begin{lstlisting}[style=pythonstyle]
+>>> numbers = list(map(int, input().split()))
+>>> print(numbers)
+[1, 2, 3]
+        \end{lstlisting}
+
+  \item Este ejercicio evalúa los temas vistos hasta \textbf{listas y diccionarios}.
+
+  \item No es necesario usar estructuras de datos más avanzadas ni importar librerías externas, tampoco usar funciones built-in como; \lstinline[style=pythonstyle]|max()|, \lstinline[style=pythonstyle]|min()|, \lstinline[style=pythonstyle]|.index()|, entre otras similares. En caso de tener duda, preguntar al profesor o monitor.
+
+  \item No es necesario validar errores de entrada.
+
+  \item El formato de salida debe coincidir exactamente con el especificado. Cualquier diferencia será considerada incorrecta.
+\end{enumerate}
+
+
+
+
+
+\end{document}
