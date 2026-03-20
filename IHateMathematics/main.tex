@@ -1,0 +1,239 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[english]{babel}
+\usepackage{mwe}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{gray!5},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{teal},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+  captionpos=b,
+  keepspaces=true,
+  morekeywords={ceil,cbrt,round,split,factorial,pi},
+}
+
+\hypersetup{
+  pdftitle={I Hate Mathematics},
+  pdfauthor={Ludwig Alvarado},
+  pdfsubject={Why someone hate mathematics? They're the most beautiful thing in the world, it's like hating your mother...},
+  pdfkeywords={data structures and algorithms},
+  pdfcreator={GNU Emacs desde Arch (btw) GNU/Linux y LaTeX con hyperref},
+  pdfproducer={pdflatex}
+}
+
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{30pt}
+\setlength{\footskip}{20pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+% Left header (university and exam info)
+\rhead{%
+  \small
+  University Jorge Tadeo Lozano\\
+  Data Structures - Group 2\\
+  Programming Test 
+}
+
+% Right header (date, professor, monitor)
+\lhead{%
+  \small
+  \textbf{Date}: \today \\
+  \textbf{Professor:} José Alejandro Franco Calderón \\
+  \textbf{Assistant:} Ludwig Alvarado Becerra
+}
+
+\cfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+    fonttitle=\bfseries, breakable]
+    \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+      \hline
+      \textbf{Input} & \textbf{Output} \\
+      \hline
+      }{\\ \hline
+    \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+  {\LARGE \bf I Hate Mathematics}\\[1ex]
+  Author: Ludwig Alvarado
+\end{center}
+
+Hi, my name is Vectra, I am a normal university student at the University of Tears, Anxiety, Deadlines, Exams and Overthinking (UTADEO) who really really hates math. My degree is systems engineering but all math doesn't matter there, I don't think that this bunch of math is ever going to be useful in life.
+
+Me and my friends love to \textit{parchar} in ``La Brújula''. The other day, a random guy came to us shouting a bunch of mathematical formulas that I didn't understand. In his madness he said that all of those formulas lead to the secret of the universe.
+
+Although I don't like math, I do feel curious about the universe... can you help me calculate the numeric results of the formulas that he said?
+
+You are given several queries. Each query corresponds to a specific mathematical formula. Your task is to evaluate each query and print its result.
+
+
+\begin{itemize}
+  \item \textbf{ADD}$(a,b) = a + b$
+  \item \textbf{MUL}$(a,b) = a \times b$
+  \item \textbf{POW}$(a,b) = a^b$ (using a loop, NOT built-in power)
+  \item \textbf{FACT}$(n) = n!$ (using a recursive function)
+  \item \textbf{POLY}$(a,b) = a^2 + 2ab + b^2$
+  \item \textbf{DIST}$(x_1,y_1,x_2,y_2) = (x_1 - x_2)^2 + (y_1 - y_2)^2$
+  \item \textbf{AVG}$(a,b,c) = \lfloor (a + b + c)/3 \rfloor$
+  \item \textbf{SECRET OF UNIVERSE}\((n,a,b) =\)
+        \[
+\sum_{i=1}^{n}
+\left(
+\sum_{j=1}^{n}
+\left(
+\prod_{k=1}^{n}
+\left(\pi \times e^{i + j +k} +  (a^2 + 2ab + b^2) + \frac{a + b + n}{3} \right)
+\right)
+\right)
+\]
+\end{itemize}
+
+
+\subsection*{Program input}
+
+The first line contains an integer \(q\) \((1 \leq q \leq 100)\), the number of queries.
+
+Each of the next \(q\) lines contains one of the following queries:
+
+\begin{itemize}
+  \item \texttt{ADD a b}
+  \item \texttt{MUL a b}
+  \item \texttt{POW a b}
+  \item \texttt{FACT n}
+  \item \texttt{POLY a b}
+  \item \texttt{DIST x1 y1 x2 y2}
+  \item \texttt{AVG a b c}
+  \item \texttt{UNIVERSE n a b}
+\end{itemize}
+
+All values are integers in the range:
+\begin{itemize}
+  \item General values: \([-10^3, 10^3]\)
+  \item Factorial: \(0 \leq n \leq 10\)
+  \item SECRET OF UNIVERSE: \(1 \leq n,a,b \leq 30\)
+\end{itemize}
+
+\subsection*{Program output}
+
+For each query, print a single line with the result. Any decimal value must be rounded to two decimal places.
+
+\subsection*{Sample test cases}
+
+\begin{sample}{1}{}
+\texttt{8}
+
+\texttt{ADD 1 1}
+
+\texttt{MUL 2 2}
+
+\texttt{POW 3 3}
+
+\texttt{POLY 2 3}
+
+\texttt{DIST 0 0 3 4}
+
+\texttt{AVG 3 4 8}
+
+\texttt{FACT 5}
+
+\texttt{UNIVERSE 2 2 1}
+
+&
+\texttt{2}
+
+\texttt{4}
+
+\texttt{27}
+
+\texttt{25}
+
+\texttt{1}
+
+\texttt{5}
+
+\texttt{120}
+
+\texttt{796762.03}
+
+\end{sample}
+
+\subsection*{Notes}
+
+\begin{itemize}
+  \item You must build complex functions using simpler ones.
+  \item Avoid using built-in shortcuts such as \texttt{**}, \lstinline[style=pythonstyle]{math.pow()}, or \lstinline[style=pythonstyle]|math.factorial()|.
+  \item You can use constant such as \lstinline[style=pythonstyle]|math.e| for Euler number (\(e\)) and \lstinline[style=pythonstyle]|math.pi| for pi \(\pi\).
+\end{itemize}
+
+\subsection*{Important aspects}
+
+\begin{enumerate}
+  \item The exam will be completed in \textbf{2 stages}:
+        \begin{itemize}
+          \item Algorithm development on paper \textbf{(3.0 points)}.
+                \begin{itemize}
+                  \item You must write and justify the time and memory complexity of your algorithm.
+                  \item You must identify the complexity of each function and the overall solution.
+                \end{itemize}
+          \item Implementation in the code editor \textbf{(2.0 points)}.
+        \end{itemize}
+
+  \item The data on each query line is provided as a string. You may use:
+\begin{lstlisting}[style=pythonstyle]
+data = input().split()
+\end{lstlisting}
+
+  \item This exercise evaluates the topics covered up to \textbf{functions and loops}.
+
+  \item You must avoid lambda functions.
+
+  \item It is not necessary to use advanced data structures or external libraries.
+
+  \item Output format must match exactly.
+\end{enumerate}
+
+\end{document}
