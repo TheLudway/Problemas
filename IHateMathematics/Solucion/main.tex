@@ -186,484 +186,444 @@
 
 \subsection{Objetivo}
 
-Modificar una lista 
+Evaluar múltiples consultas (queries) de fórmulas matemáticas e imprimir sus resultados numéricos. Cada consulta corresponde a una operación específica (suma, multiplicación, potencia, factorial, etc.) con sus respectivos parámetros.
 
-\subsection{Entradad de datos esperada}
+\subsection{Entrada de datos esperada}
 
-Se nos dan 6 líneas con números enteros separados por espacios, el ejemplo dado en el enunciado es:
+El enunciado nos dice de leer un número \(q\) que representa la cantidad de consultas a procesar. Para el ejemplo del enunciado la primera línea es:
+
+\texttt{8}
+
+Este \texttt{8} es \(q\), ahora se deben leer \(q\) consultas. Cada consulta consiste en un string con el nombre de la operación seguido de sus parámetros. Por ejemplo, la segunda línea es:
+
+\texttt{ADD 1 1}
+
+De esta cadena podemos obtener; la operación \texttt{ADD} y sus dos parámetros \texttt{1} y \texttt{1}. Estos datos se pueden almacenar usando la función \lstinline[style=pythonstyle]|split()| que convierte la cadena en una lista.
+
+Para el caso de ejemplo completo tenemos:
 
 \begin{verbatim}
--1 -1 78 50 90
-5 -1 100 90 115
-3 7 20 15 10
-0 8 40 55 30
--2 11 470 450 370
--7 2 90 95 80
+8
+ADD 1 1
+MUL 2 2
+POW 3 3
+POLY 2 3
+DIST 0 0 3 4
+AVG 3 4 8
+FACT 5
+UNIVERSE 2 2 1
 \end{verbatim}
 
-Cada línea corresponde a una mesa de votación, teniendo en cuenta el enunciado del problema; el primer valor es la coordenada en \(x\) de la mesa, el segundo la coordenada \(y\), el tercero es la cantidad de votos para Andrea, el cuarto es la cantidad de votos para Bobby, el último dato es la cantidad de votos para Claudia. Por lo tanto, la mesa 1 se encuentra en la coordenada \((-1, -1)\), 78 estudiantes votaron por Andrea en esta mesa, 50 por Bobby y 90 por Claudia. Aplicando esto mismo a los demás datos podemos ver:
-
-\begin{tabular}{|p{2.5cm}|p{1.8cm}|p{1.8cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
-\hline
-Número mesa & Coordenada \(x\) & Coordenada \(y\) & Votos Andrea & Votos Bobby & Votos Claudia \\
-\hline
-  1 & -1 & -1 & 78 & 50 & 90 \\ \hline
-  2 & 5 & -1 & 100 & 90 & 115 \\ \hline
-  3 & 3 & 7 & 20 & 15 & 10 \\ \hline
-  4 & 0 & 8 & 40 & 55 & 30 \\ \hline
-  5 & -2 & 11 & 470 & 450 & 370 \\ \hline
-  6 & -7 & 2 & 90 & 95 & 80 \\ \hline 
-\end{tabular}
-
-
-Para este primer caso\footnote{Tomar en cuenta que pueden haber muchos más casos} podemos representarlo visualmente en un plano cartesiano tomando las coordenadas \(x\) y \(y\) de cada mesa:
-
-
-\begin{center}
-\begin{tikzpicture}[]
-\begin{axis}[
-    axis lines=middle,
-    xmin=-8, xmax=8,
-    ymin=-3, ymax=12,
-    grid=both,
-    width=15cm,
-    height=15cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (-1,-1)
-    (5,-1)
-    (3,7)
-    (0,8)
-    (-2,11)
-    (-7,2)
-    (0,0)
-};
-
-\node at (axis cs:-1,-1) [below left] {Mesa 1};
-\node at (axis cs:5,-1) [below right] {Mesa 2};
-\node at (axis cs:3,7) [below right] {Mesa 3};
-\node at (axis cs:0,8) [above right] {Mesa 4};
-\node at (axis cs:-2,11) [above left] {Mesa 5};
-\node at (axis cs:-7,2) [below right] {Mesa 6};
-\node at (axis cs:0,0) [above right] {Origen};
-
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
+Donde cada línea después de la primera representa una operación diferente con sus respectivos parámetros.
 
 \subsection{Salida de datos esperada}
 
-Una vez entendido cómo están organizados los datos de entrada, se prosigue a entender el formato de salida requerido, los únicos detalles a tener en cuenta es el redondeo de los porcentajes a dos dígitos y aplicar lo mismo para la distancia de la mesa más lejana al origen, para más información puede visitar la sección~\ref{sub:sec:salida}. 
+Para cada consulta, se debe imprimir una línea con el resultado de la operación. Los valores decimales deben ser redondeados a dos decimales usando la función \lstinline[style=pythonstyle]|round()|. Para el ejemplo anterior, la salida esperada es:
+
+\begin{verbatim}
+2
+4
+27
+25
+25
+5
+120
+796762.03
+\end{verbatim} 
 
 \section{Solución conceptual}
 
-\subsection{Conteo de votos}
+\subsection{Implementar funciones básicas}
+\label{sec:funciones-basicas}
 
-Se necesitan 4 variables para el conteo de votos; una para el conteo global y las otras tres para cada candidato. Cada vez que se leen los votos para un candidato en una mesa se deben agrega este valor a la variable de dicho candidato, repetir 6 veces dicha acción. Terminado el conteo individual de votos se puede asignar la suma de los votos de cada candidato a la variable global. Para obtener el porcentaje total de los votos de candidato se puede utilizar:
+El problema requiere implementar operaciones matemáticas usando funciones simples. Es importante construir las funciones complejas a partir de las más simples, según indica el enunciado.
 
-\[
-\%\text{Votos Candidato} = \frac{\text{Total Votos Candidato}}{ \text{Total Votos Global} } \times 100
-\]
+\subsubsection{Función ADD}
 
-\subsection{Distancia mesa con más votos}
-\label{sub:sec:distancia}
+La función de suma \textbf{ADD}\((a,b)\) retorna \(a + b\). Esta es una operación básica que se implementa directamente con el operador \texttt{+}.
 
+\subsubsection{Función MUL}
 
-Inicialmente se inicializa en \(0\) una variable de \texttt{distancia\_max} y cada vez que se reciben las coordenadas de una mesa se debe computar la distancia desde el origen hasta dicho punto. Tome en cuenta el siguiente plano cartesiano visualizando el origen y la mesa 3 (datos del ejemplo del ejercicio):
+La función de multiplicación \textbf{MUL}\((a,b)\) retorna \(a \times b\). Se implementa directamente con el operador \texttt{*}.
 
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines=middle,
-    xmin=-2, xmax=5,
-    ymin=-2, ymax=8,
-    grid=both,
-    width=9cm,
-    height=9cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
+\subsubsection{Función POW}
 
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (3,7)
-    (0,0)
-};
+La función de potencia \textbf{POW}\((a,b)\) retorna \(a^b\). El enunciado especifica que NO se debe usar el operador \texttt{**} ni \lstinline[style=pythonstyle]|math.pow()|, por lo tanto se debe implementar usando un ciclo. 
 
-\node at (axis cs:3,7) [above right] {$(3,7)$};
-\node at (axis cs:0,0) [above left] {$(0,0)$};
+La idea es multiplicar \(a\) consigo mismo \(b\) veces. Se puede usar un ciclo \lstinline[style=pythonstyle]|for| que itere \(b\) veces y en cada iteración multiplique el resultado acumulado por \(a\).
 
-\end{axis}
-\end{tikzpicture}
-\end{center}
+\begin{enumerate}
+  \item Inicializar una variable \texttt{resultado} en 1.
+  \item Iterar \(b\) veces.
+  \item En cada iteración, multiplicar \texttt{resultado} por \(a\).
+  \item Retornar \texttt{resultado}.
+\end{enumerate}
 
-Se puede trazar un vector \(\vec{v}\) desde el origen hasta el punto \((3, 7)\):
+\subsubsection{Función FACT}
 
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines=middle,
-    xmin=-2, xmax=5,
-    ymin=-2, ymax=8,
-    grid=both,
-    width=9cm,
-    height=9cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (3,7)};
-\node at (axis cs:1.5,3.5) [above left] {$\vec{v}$};
-
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (3,7)
-    (0,0)
-};
-
-\node at (axis cs:3,7) [above right] {$(3,7)$};
-\node at (axis cs:0,0) [above left] {$(0,0)$};
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-
-La magnitud \(\lvert  \vec{v} \rvert  \) de este vector \(\vec{v}\) se interpreta dentro del problema como ``la distancia desde el origen hasta la mesa 3'', recordando clases de Física I, se sabe que para sacar la magnitud de este vector se deben sacar las componentes rectángulares \(v_x\) y \(v_y\), gráficamente:
-
-
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines=middle,
-    xmin=-2, xmax=5,
-    ymin=-2, ymax=8,
-    grid=both,
-    width=10cm,
-    height=10cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (3,7)};
-\node at (axis cs:1.5,3.5) [above left] {$\vec{v}$};
-
-\addplot[ultra thick, green!90!black] coordinates {(0,0) (3,0)};
-\node at (axis cs:1.5,0) [above] {$v_x$};
-
-\addplot[ultra thick, orange] coordinates {(3,0) (3,7)};
-\node at (axis cs:3,3.5) [right] {$v_y$};
-
-% Guide lines (optional dashed projection)
-\addplot[dashed] coordinates {(3,7) (3,0)};
-\addplot[dashed] coordinates {(3,7) (0,7)};
-
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (3,7)
-    (0,0)
-};
-
-\node at (axis cs:3,7) [above right] {$(3,7)$};
-\node at (axis cs:0,0) [above left] {$(0,0)$};
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-Para sacar la magnitud de \(\vec{v}\) se puede utilizar la siguiente fórmula\footnote{Para saber más información de esta fórmula puede visitar el siguiente enlace \url{https://en.wikipedia.org/wiki/Euclidean_space\#Euclidean_norm}}:
+La función factorial \textbf{FACT}\((n)\) retorna \(n!\). El enunciado indica que debe implementarse recursivamente. El factorial se define como:
 
 \[
-\lvert \vec{v} \rvert = \sqrt{(v_x)^2 + (v_y)^2}
+n! = \begin{cases}
+1 & \text{si } n = 0 \\
+n \times (n-1)! & \text{si } n > 0
+\end{cases}
 \]
 
-Una vez sacado el procedimiento para obtener la distancia, se sigue una estrategia de fuerza bruta para obtener la distancia máxima comparando entre todas las distancias (mire el gráfico de la siguiente pagina) cuál valor es mayor, si \texttt{distancia\_max} o la distancia recién obtenida del cálculo.  
+La implementación recursiva debe tener un caso base cuando \(n = 0\) o \(n = 1\) que retorne 1, y en caso contrario retornar \(n \times \text{FACT}(n-1)\).
 
+\subsubsection{Función POLY}
 
-\begin{center}
-\begin{tikzpicture}[]
-\begin{axis}[
-    axis lines=middle,
-    xmin=-8, xmax=8,
-    ymin=-3, ymax=12,
-    grid=both,
-    width=15cm,
-    height=15cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
+La función polinómica \textbf{POLY}\((a,b)\) retorna \(a^2 + 2ab + b^2\). Esta fórmula corresponde al desarrollo del binomio \((a+b)^2\). Se puede implementar usando las funciones básicas ya definidas:
 
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (-1,-1)
-    (5,-1)
-    (3,7)
-    (0,8)
-    (-2,11)
-    (-7,2)
-    (0,0)
-};
+\begin{enumerate}
+  \item Calcular \(a^2\) usando \texttt{POW(a, 2)}.
+  \item Calcular \(2ab\) usando \texttt{MUL(2, MUL(a, b))}.
+  \item Calcular \(b^2\) usando \texttt{POW(b, 2)}.
+  \item Sumar los tres resultados.
+\end{enumerate}
 
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (-1,-1)};
-\node at (axis cs:0.25,-0.8) [above left] {$\vec{m}_1$};
+\subsubsection{Función DIST}
 
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (5,-1)};
-\node at (axis cs:3,-0.7) [below right] {$\vec{m}_2$};
+La función de distancia \textbf{DIST}\((x_1,y_1,x_2,y_2)\) retorna \((x_1 - x_2)^2 + (y_1 - y_2)^2\). Note que esta NO es la distancia euclidiana completa (que requeriría raíz cuadrada), sino solo la suma de los cuadrados de las diferencias.
 
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (3,7)};
-\node at (axis cs:1.5,3.5) [above left] {$\vec{m}_3$};
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (0,8)};
-\node at (axis cs:0,4.5) [right] {$\vec{m}_4$};
+\begin{enumerate}
+  \item Calcular la diferencia \(x_1 - x_2\).
+  \item Elevar al cuadrado usando \texttt{POW}.
+  \item Calcular la diferencia \(y_1 - y_2\).
+  \item Elevar al cuadrado usando \texttt{POW}.
+  \item Sumar ambos resultados.
+\end{enumerate}
 
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (-2,11)};
-\node at (axis cs:-1.3,7) [left] {$\vec{m}_5$};
+\subsubsection{Función AVG}
 
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (-7,2)};
-\node at (axis cs:-3.5,1.3) [above left] {$\vec{m}_6$};
+La función de promedio \textbf{AVG}\((a,b,c)\) retorna \(\frac{a+b+c}{3}\). Se suma los tres valores y se divide entre 3.
 
-\node at (axis cs:-1,-1) [below left] {Mesa 1};
-\node at (axis cs:5,-1) [below right] {Mesa 2};
-\node at (axis cs:3,7) [below right] {Mesa 3};
-\node at (axis cs:0,8) [above right] {Mesa 4};
-\node at (axis cs:-2,11) [above left] {Mesa 5};
-\node at (axis cs:-7,2) [above right] {Mesa 6};
-\node at (axis cs:0,0) [above right] {Origen};
+\subsection{Función SECRET OF UNIVERSE}
+\label{sec:universe}
 
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-En conclusión, sacar la magnitud para todos los vectores \(\vec{m_i} \ (1 \leq i \leq 6)\) y guardar en \texttt{distancia\_max} la magnitud máxima.
-
-\subsection{Índice Energético de Votación}
-\label{sub:sec:iev}
-
-Se nos pide sacar el IEV de la mesa que posee más votos recogidos. Para obtener la mesa con mayor votos se crean dos variables globales \texttt{mesa\_iev} y \texttt{votos\_iev} inicializadas en 0, cada vez que se lea cada línea y se extraigan los votos para cada candidato se compara si ese resultado es mayor al global \texttt{votos\_iev} entonces se asigna \texttt{votos\_iev} a la suma de los votos de la mesa actual y guarde el número de la mesa en \texttt{mesa\_iev}, si no, continue con el programa.   
-
-Una vez obtenida qué mesa tiene la mayor cantidad de votos se puede aplicar la fórmula dada en el problema:
+La función más compleja del problema es \textbf{SECRET OF UNIVERSE}\((n,a,b)\) que calcula:
 
 \[
-IEV = \lceil \sqrt[3]{V} \rceil
+\sum_{i=1}^{n}
+\left(
+\sum_{j=1}^{n}
+\left(
+\prod_{k=1}^{n}
+\left(\pi \times e^{i + j +k} +  (a^2 + 2ab + b^2) + \frac{a + b + n}{3} \right)
+\right)
+\right)
 \]
 
-Debido a que se está permitido usar las funciones \lstinline[style=pythonstyle]|cbrt()| y \lstinline[style=pythonstyle]|ceil()| del módulo \lstinline[style=pythonstyle]|math|, realizar estas dos operaciones es trivial. Sin embargo, no se puede utilizar la función \lstinline[style=pythonstyle]|fact()|, por lo tanto, toca realizar este cálculo utilizando la definición del factorial para cualquier número entero positivo \(n\):
+Esta fórmula tiene tres niveles de anidación: una suma externa, una suma interna, y un producto más interno. Para implementarla:
 
-\[
-n! = \prod_{i=1}^n i 
-\]
+\begin{enumerate}
+  \item Inicializar una variable para la suma externa.
+  \item Iterar \(i\) de 1 a \(n\).
+  \item Para cada \(i\), inicializar una variable para la suma interna.
+  \item Iterar \(j\) de 1 a \(n\).
+  \item Para cada \(j\), inicializar una variable para el producto.
+  \item Iterar \(k\) de 1 a \(n\).
+  \item Para cada \(k\), calcular el término: \(\pi \times e^{i + j +k} +  (a^2 + 2ab + b^2) + \frac{a + b + n}{3}\)
+  \item Multiplicar este término al producto acumulado.
+  \item Agregar el producto a la suma interna.
+  \item Agregar la suma interna a la suma externa.
+  \item Retornar la suma externa.
+\end{enumerate}
 
-Modificando para el caso del IEV, se cómputa entonces:
-
-\[
-IEV = \prod_{i=1}^{ \lceil \sqrt[3]{V} \rceil  } i
-\]
-
-Donde \(V\) son los votos de la mesa con mayor votos recaudados.
+Para calcular \((a^2 + 2ab + b^2)\) se puede reutilizar la función \texttt{POLY(a, b)}. Para calcular \(\frac{a + b + n}{3}\) se puede usar \texttt{AVG(a, b, n)}. Se pueden usar las constantes \lstinline[style=pythonstyle]|math.pi| y \lstinline[style=pythonstyle]|math.e| según indica el enunciado.
 
 \section{Código modelo}
 \label{sec:codigo}
 
-
 Se va a explicar parte a parte una posible solución al problema, recuerde que puede probar con diferentes implementaciones o incluso formulando más soluciones al problema, se invita al estudiante que haga ese ejercicio.
 
-En primer lugar, se importa el modulo de \lstinline[style=pythonstyle]|math| para utilizar las funciones de \lstinline[style=pythonstyle]|ceil()|, \lstinline[style=pythonstyle]|sqrt()| y \lstinline[style=pythonstyle]|cbrt()|.  
+En primer lugar, se importa el módulo de \lstinline[style=pythonstyle]|math| para utilizar las constantes \lstinline[style=pythonstyle]|math.pi| y \lstinline[style=pythonstyle]|math.e|:
 
 \begin{lstlisting}[style=pythonstyle]
 import math
 \end{lstlisting}
 
-\subsection{Declaración de variables}
+\subsection{Implementación de funciones básicas}
 
-Ahora, se declaran 9 variables para ayudar al almacenamiento de los datos:
+Siguiendo la teoría de la sección~\ref{sec:funciones-basicas}, se implementan las funciones básicas.
 
-\begin{itemize}
-  \item \texttt{total\_votos}: Conteo global de votos.
-  \item \texttt{andrea}: Votos totales de Andrea.
-  \item \texttt{bobby}: Votos totales de Bobby.
-  \item \texttt{claudia}: Votos totales de Claudia.
-  \item \texttt{mesa\_lejana}: Número de la mesa más lejana al origen.
-  \item \texttt{distancia}: Distancia desde el origen hasta la mesa más lejana.
-  \item \texttt{IEV}: Índice Energético de Votación de la mesa con mayor número de votos.
-  \item \texttt{mesa\_iev}: Número de la mesa con más votos recogidos.
-  \item \texttt{votos\_iev}: Número de votos de la mesa con más votos recogidos. 
-\end{itemize}
+\subsubsection{Funciones ADD y MUL}
 
-Teniendo el contexto del significado de cada variable se pueden inicializar cada una de ellas de la siguiente manera:
+Estas funciones son directas, simplemente retornan la operación correspondiente:
 
 \begin{lstlisting}[style=pythonstyle]
-total_votos = 0
-andrea = 0
-bobby = 0
-claudia = 0
-mesa_lejana = 0
-distancia = -1
-IEV = 1
-mesa_iev = 0
-votos_iev = 0
+def ADD(a: int, b: int) -> int:
+    return a + b
+
+def MUL(a: int, b: int) -> int:
+    return a * b
 \end{lstlisting}
 
-\subsection{Lectura de datos}
+\subsubsection{Función POW}
 
-Ahora, se deben leer los datos de entrada, se sabe que solo van a haber 6 líneas se puede realizar un ciclo \lstinline[style=pythonstyle]|for| con rango de 1 a 6 (tenga en cuenta que \(i\) va a ser el número de la mesa), incluyendo ambos extremos.
+Para la potencia, se debe usar un ciclo en lugar del operador \texttt{**}:
 
 \begin{lstlisting}[style=pythonstyle]
-for i in range(1, 7):
+def POW(a: int, b: int) -> int:
+    resultado = 1
+    for _ in range(b):
+        resultado = MUL(resultado, a)
+    return resultado
 \end{lstlisting}
 
-Dentro del ciclo \lstinline[style=pythonstyle]|for| se guardan los datos de entrada utilizando la función \lstinline[style=pythonstyle]|map()|, esta función toma dos parámetros; una función y un \textit{objeto iterable}. A cada elemento del \textit{objeto iterable} (e.j., una lista) se le aplica la función colocada en el primer parámetro\footnote{Para más información del funcionamiento de la función \lstinline[style=pythonstyle]|map()| puede visitar la documentación oficial \url{https://docs.python.org/3/library/functions.html\#map}}. Utilizando el desempaquetado de tuplas de Python se le pueden asignar a 6 variables la línea de datos de entrada\footnote{Se recomienda realizar la lectura de esta sección de la documentación de Python \url{https://docs.python.org/3/tutorial/datastructures.html\#tuples-and-sequences}}:
+Note que se reutiliza la función \texttt{MUL} para la multiplicación.
+
+\subsubsection{Función FACT}
+
+El factorial se implementa de forma recursiva:
 
 \begin{lstlisting}[style=pythonstyle]
-x, y, a, b, c = map(int, input().split())
+def FACT(n: int) -> int:
+    if (n == 0 or n == 1):
+        return 1
+    return MUL(n, FACT(n - 1))
 \end{lstlisting}
 
-Por ejemplo, cuando el usuario digite:
+\subsubsection{Función POLY}
 
-\begin{verbatim}
--1 -1 78 50 90
-\end{verbatim}
-
-Las variables \texttt{x}, \texttt{y}, \texttt{a}, \texttt{b} y \texttt{c} van a tener los valores de; -1, -1, 78, 50, y 90, respectivamente. 
-
-\textbf{Recordatorio:} La función \lstinline[style=pythonstyle]|input()| retorna una cadena y \lstinline[style=pythonstyle]|.split()| convierte una cadena a lista usando un separador, por defecto es el carácter de espacio, es decir, cuando el usuario escriba:
-
-\begin{verbatim}
-"-1 -1 78 50 90"
-\end{verbatim}
-
-Se aplica el \lstinline[style=pythonstyle]|split()| quedando como:
+La función polinómica reutiliza las funciones ya definidas:
 
 \begin{lstlisting}[style=pythonstyle]
-["-1", "-1", "78", "50", "90"]
+def POLY(a: int, b: int) -> int:
+    a_cuadrado = POW(a, 2)
+    dos_ab = MUL(2, MUL(a, b))
+    b_cuadrado = POW(b, 2)
+    return ADD(ADD(a_cuadrado, dos_ab), b_cuadrado)
 \end{lstlisting}
 
-Permitiendo que se pueda aplicar la función \lstinline[style=pythonstyle]|map()| explicada anteriormente.
+\subsubsection{Función DIST}
 
-\subsection{Votos totales para cada candidato}
-
-Una vez obtenido los votos de cada candidato en la mesa \(i\) se añade a su respectiva variable global los votos de esa mesa:
+Para la distancia al cuadrado:
 
 \begin{lstlisting}[style=pythonstyle]
-andrea += a
-bobby += b
-claudia += c
+def DIST(x1: int, y1: int, x2: int, y2: int) -> int:
+    diff_x = x1 - x2
+    diff_y = y1 - y2
+    return ADD(POW(diff_x, 2), POW(diff_y, 2))
 \end{lstlisting}
 
-\subsection{Distancia de la i-ésima mesa de votación}
+\subsubsection{Función AVG}
 
-Como también se tienen las coordenadas de la mesa \(i\) se obtiene la distancia desde el origen hasta le mesa \(i\) utilizando lo explicado en la sección~\ref{sub:sec:distancia} y comparar si esta es mayor a la variable declarada anteriormente de \texttt{distancia}:
+El promedio se calcula sumando y dividiendo:
 
 \begin{lstlisting}[style=pythonstyle]
-dist_actual = math.sqrt(x**2 + y**2)
-
-if (dis_actual > distancia):
-    distancia = dist_actual
-    mesa_lejana = i
+def AVG(a: int, b: int, c: int) -> float:
+    suma = ADD(ADD(a, b), c)
+    return suma / 3
 \end{lstlisting}
 
-\subsection{Mesa con más votos recogidos}
-  
-Ahora, se debe obtener cuál fue la mesa con más votos y cuántos tuvo utilizando la suma de las variables \texttt{a}, \texttt{b} y \texttt{c}, comparando con la variable anteriormente declarada \texttt{votos\_iev}:
+\subsection{Función SECRET OF UNIVERSE}
+
+La función más compleja requiere tres ciclos anidados según se explicó en la sección~\ref{sec:universe}:
 
 \begin{lstlisting}[style=pythonstyle]
-if (a + b + c > votos_iev):
-    votos_iev = a + b + c
-    mesa_iev = i
+def UNIVERSE(n: int, a: int, b: int) -> float:
+    suma_externa = 0
+    poly_valor = POLY(a, b)
+    avg_valor = AVG(a, b, n)
+    
+    for i in range(1, n + 1):
+        suma_interna = 0
+        for j in range(1, n + 1):
+            producto = 1
+            for k in range(1, n + 1):
+                exponente = i + j + k
+                termino = math.pi * (math.e ** exponente) + poly_valor + avg_valor
+                producto *= termino
+            suma_interna += producto
+        suma_externa += suma_interna
+    
+    return suma_externa
 \end{lstlisting}
 
-\subsection{Votos totales en las elecciones}
+Note que se calculan \texttt{poly\_valor} y \texttt{avg\_valor} fuera de los ciclos para evitar cálculos repetidos innecesarios.
 
-Esas fueron las acciones que debe repetir ese ciclo \lstinline[style=pythonstyle]|for|, una vez finalizado se puede obtener la cantidad de votos en las elecciones utilizando las variables declaradas inicialmente:
+\subsection{Lectura de datos y procesamiento de consultas}
+
+Ahora se procede a leer el número de consultas:
 
 \begin{lstlisting}[style=pythonstyle]
-total_votos = andrea + bobby + claudia
+q = int(input())
 \end{lstlisting}
 
-\subsection{Índice Energético de Votación}
-
-El último dato que se necesita sacar es el IEV, teniendo en cuenta la teoría de la sección~\ref{sub:sec:iev} se itera desde un intervalo de \([1, \lceil \sqrt[3]{\text{\texttt{total\_votos}}} \rceil]\) y se múltiplica por \(i\) el valor actual de \texttt{IEV}, reasignando este mismo a dicha operación:
+Luego se itera sobre cada consulta:
 
 \begin{lstlisting}[style=pythonstyle]
-for i in range(1, math.ceil(math.cbrt(votos_iev))+1):
-    IEV *= i
+for _ in range(q):
+    data = input().split()
+    operacion = data[0]
 \end{lstlisting}
 
-\subsection{Salida de resultados}
-\label{sub:sec:salida}
+La función \lstinline[style=pythonstyle]|split()| convierte la cadena en una lista. Por ejemplo, si el usuario ingresa:
 
-Ya obtenidos todos los datos necesarios se utiliza la ayuda de la función \lstinline[style=pythonstyle]|round()| para redondear los datos necesarios, además de computar el porcentaje de votos totales obtenidos por cada candidato. La salida que va a ver el usuario entonces se codifica\footnote{El penúltimo dato se debe escribir como ``Mesa más lejana'', se escribe sin tilde debido a errores con la compilación de \LaTeX} como:
+\texttt{"ADD 1 1"}
+
+Después de \lstinline[style=pythonstyle]|split()|, \texttt{data} será:
 
 \begin{lstlisting}[style=pythonstyle]
-print(f"Total Votos: {total_votos}")
-print(f"Votos Andrea: {andrea} {round(andrea/total_votos*100, 2)}%")
-print(f"Votos Bobby: {bobby} {round(bobby/total_votos*100, 2)}%")
-print(f"Votos Claudia: {claudia} {round(claudia/total_votos*100, 2)}%")
-print(f"Mesa mas lejana: {mesa_lejana} {round(distancia, 2)}")
-print(f"IEV: {mesa_iev} {IEV}")
+["ADD", "1", "1"]
 \end{lstlisting}
 
+Permitiendo extraer la operación y sus parámetros.
 
-Finalmente, se puede ensamblar cada pieza de código en uno solo como se muestra a continuación:
+\subsection{Evaluación de operaciones}
+
+Se debe evaluar qué operación ejecutar usando condicionales. Para cada operación se extraen los parámetros necesarios de la lista \texttt{data} y se convierten a enteros:
+
+\begin{lstlisting}[style=pythonstyle]
+    if (operacion == "ADD"):
+        a, b = int(data[1]), int(data[2])
+        resultado = ADD(a, b)
+        print(resultado)
+        
+    elif (operacion == "MUL"):
+        a, b = int(data[1]), int(data[2])
+        resultado = MUL(a, b)
+        print(resultado)
+        
+    elif (operacion == "POW"):
+        a, b = int(data[1]), int(data[2])
+        resultado = POW(a, b)
+        print(resultado)
+        
+    elif (operacion == "FACT"):
+        n = int(data[1])
+        resultado = FACT(n)
+        print(resultado)
+        
+    elif (operacion == "POLY"):
+        a, b = int(data[1]), int(data[2])
+        resultado = POLY(a, b)
+        print(resultado)
+        
+    elif (operacion == "DIST"):
+        x1, y1 = int(data[1]), int(data[2])
+        x2, y2 = int(data[3]), int(data[4])
+        resultado = DIST(x1, y1, x2, y2)
+        print(resultado)
+        
+    elif (operacion == "AVG"):
+        a, b, c = int(data[1]), int(data[2]), int(data[3])
+        resultado = AVG(a, b, c)
+        print(round(resultado, 2))
+        
+    elif (operacion == "UNIVERSE"):
+        n, a, b = int(data[1]), int(data[2]), int(data[3])
+        resultado = UNIVERSE(n, a, b)
+        print(round(resultado, 2))
+\end{lstlisting}
+
+Note que para \texttt{AVG} y \texttt{UNIVERSE} se usa \lstinline[style=pythonstyle]|round(resultado, 2)| para redondear a dos decimales como lo requiere el enunciado.
+
+\subsection{Código final}
+
+Ensamblando todas las piezas del código obtenemos:
 
 \begin{lstlisting}[style=pythonstyle]
 import math
 
-total_votos = 0
-andrea = 0
-bobby = 0
-claudia = 0
-mesa_lejana = 0
-distancia = -1
-IEV = 1
-mesa_iev = 0
-votos_iev = 0
+def ADD(a: int, b: int) -> int:
+    return a + b
 
-for i in range(1, 7):
-    x, y, a, b, c = map(int, input().split())
-    dist_actual = math.sqrt(x**2 + y**2)
+def MUL(a: int, b: int) -> int:
+    return a * b
 
-    if (dist_actual > distancia):
-        distancia = dist_actual
-        mesa_lejana = i
+def POW(a: int, b: int) -> int:
+    resultado = 1
+    for _ in range(b):
+        resultado = MUL(resultado, a)
+    return resultado
 
-    if (a + b + c > votos_iev):
-        votos_iev = a + b + c
-        mesa_iev = i
+def FACT(n: int) -> int:
+    if (n == 0 or n == 1):
+        return 1
+    return MUL(n, FACT(n - 1))
 
-    andrea += a
-    bobby += b
-    claudia += c
-total_votos = andrea + bobby + claudia
+def POLY(a: int, b: int) -> int:
+    a_cuadrado = POW(a, 2)
+    dos_ab = MUL(2, MUL(a, b))
+    b_cuadrado = POW(b, 2)
+    return ADD(ADD(a_cuadrado, dos_ab), b_cuadrado)
 
-for i in range(1, math.ceil(math.cbrt(votos_iev))+1):
-    IEV *= i
+def DIST(x1: int, y1: int, x2: int, y2: int) -> int:
+    diff_x = x1 - x2
+    diff_y = y1 - y2
+    return ADD(POW(diff_x, 2), POW(diff_y, 2))
 
-print(f"Total Votos: {total_votos}")
-print(f"Votos Andrea: {andrea} {round(andrea/total_votos*100, 2)}%")
-print(f"Votos Bobby: {bobby} {round(bobby/total_votos*100, 2)}%")
-print(f"Votos Claudia: {claudia} {round(claudia/total_votos*100, 2)}%")
-print(f"Mesa mas lejana: {mesa_lejana} {round(distancia, 2)}")
-print(f"IEV: {mesa_iev} {IEV}")
+def AVG(a: int, b: int, c: int) -> float:
+    suma = ADD(ADD(a, b), c)
+    return suma / 3
+
+def UNIVERSE(n: int, a: int, b: int) -> float:
+    suma_externa = 0
+    poly_valor = POLY(a, b)
+    avg_valor = AVG(a, b, n)
+    
+    for i in range(1, n + 1):
+        suma_interna = 0
+        for j in range(1, n + 1):
+            producto = 1
+            for k in range(1, n + 1):
+                exponente = i + j + k
+                termino = math.pi * (math.e ** exponente) + poly_valor + avg_valor
+                producto *= termino
+            suma_interna += producto
+        suma_externa += suma_interna
+    
+    return suma_externa
+
+q = int(input())
+
+for _ in range(q):
+    data = input().split()
+    operacion = data[0]
+    
+    if (operacion == "ADD"):
+        a, b = int(data[1]), int(data[2])
+        resultado = ADD(a, b)
+        print(resultado)
+        
+    elif (operacion == "MUL"):
+        a, b = int(data[1]), int(data[2])
+        resultado = MUL(a, b)
+        print(resultado)
+        
+    elif (operacion == "POW"):
+        a, b = int(data[1]), int(data[2])
+        resultado = POW(a, b)
+        print(resultado)
+        
+    elif (operacion == "FACT"):
+        n = int(data[1])
+        resultado = FACT(n)
+        print(resultado)
+        
+    elif (operacion == "POLY"):
+        a, b = int(data[1]), int(data[2])
+        resultado = POLY(a, b)
+        print(resultado)
+        
+    elif (operacion == "DIST"):
+        x1, y1 = int(data[1]), int(data[2])
+        x2, y2 = int(data[3]), int(data[4])
+        resultado = DIST(x1, y1, x2, y2)
+        print(resultado)
+        
+    elif (operacion == "AVG"):
+        a, b, c = int(data[1]), int(data[2]), int(data[3])
+        resultado = AVG(a, b, c)
+        print(round(resultado, 2))
+        
+    elif (operacion == "UNIVERSE"):
+        n, a, b = int(data[1]), int(data[2]), int(data[3])
+        resultado = UNIVERSE(n, a, b)
+        print(round(resultado, 2))
 \end{lstlisting}
 
 
