@@ -434,7 +434,7 @@ def UNIVERSE(n: int, a: int, b: int) -> float:
             producto = 1
             for k in range(1, n + 1):
                 exponente = i + j + k
-                termino = math.pi * (math.e ** exponente) + poly_valor + avg_valor
+                termino = math.pi * (POW(math.e, exponente)) + poly_valor + avg_valor
                 producto *= termino
             suma_interna += producto
         suma_externa += suma_interna
@@ -571,7 +571,7 @@ def UNIVERSE(n: int, a: int, b: int) -> float:
             producto = 1
             for k in range(1, n + 1):
                 exponente = i + j + k
-                termino = math.pi * (math.e ** exponente) + poly_valor + avg_valor
+                termino = math.pi * (POW(math.e, exponente)) + poly_valor + avg_valor
                 producto *= termino
             suma_interna += producto
         suma_externa += suma_interna
