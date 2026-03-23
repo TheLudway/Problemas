@@ -165,7 +165,7 @@
 \title{ \normalsize \textsc{}
   \\ [2.0cm]
   \HRule{1.5pt} \\
-  \LARGE \textbf{\uppercase{I Hate Mathematics - solución guía}
+  \LARGE \textbf{\uppercase{Andrew The Terrible - solución guía}
     \HRule{2.0pt} \\ [0.6cm] \LARGE{Universidad de Bogotá Jorge Tadeo Lozano} \vspace*{13\baselineskip}}
 }
 \date{}
@@ -186,484 +186,429 @@
 
 \subsection{Objetivo}
 
-Modificar una lista 
+Modificar una lista cambiando la posición del elemento más grande de la lista con uno dado por Andrew o si  inseguro, cambiarlo por la posición del elemento más pequeño de la lista.
 
-\subsection{Entradad de datos esperada}
+\subsection{Entrada de datos esperada}
 
-Se nos dan 6 líneas con números enteros separados por espacios, el ejemplo dado en el enunciado es:
+El enunciado nos dice de leer datos hasta que se le entregue un \(n = 0\), por ejemplo, en el ejemplo del enunciado la primera línea es:
 
-\begin{verbatim}
--1 -1 78 50 90
-5 -1 100 90 115
-3 7 20 15 10
-0 8 40 55 30
--2 11 470 450 370
--7 2 90 95 80
-\end{verbatim}
+\texttt{1}
 
-Cada línea corresponde a una mesa de votación, teniendo en cuenta el enunciado del problema; el primer valor es la coordenada en \(x\) de la mesa, el segundo la coordenada \(y\), el tercero es la cantidad de votos para Andrea, el cuarto es la cantidad de votos para Bobby, el último dato es la cantidad de votos para Claudia. Por lo tanto, la mesa 1 se encuentra en la coordenada \((-1, -1)\), 78 estudiantes votaron por Andrea en esta mesa, 50 por Bobby y 90 por Claudia. Aplicando esto mismo a los demás datos podemos ver:
+Este \texttt{1} es \(n\), ahora se deben leer \(n\) departamentos, por eso mismo, tenemos que la segunda línea es:
 
-\begin{tabular}{|p{2.5cm}|p{1.8cm}|p{1.8cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
-\hline
-Número mesa & Coordenada \(x\) & Coordenada \(y\) & Votos Andrea & Votos Bobby & Votos Claudia \\
-\hline
-  1 & -1 & -1 & 78 & 50 & 90 \\ \hline
-  2 & 5 & -1 & 100 & 90 & 115 \\ \hline
-  3 & 3 & 7 & 20 & 15 & 10 \\ \hline
-  4 & 0 & 8 & 40 & 55 & 30 \\ \hline
-  5 & -2 & 11 & 470 & 450 & 370 \\ \hline
-  6 & -7 & 2 & 90 & 95 & 80 \\ \hline 
-\end{tabular}
+\texttt{Finance 5 0}
 
+De esta cadena podemos obtener; \(s\), el nombre del departamento; \(m\), el número de empleados en el departamento; \(I\), el índice por el cual se debe cambiar de posición el elemento mayor de la lista. Teniendo en cuenta lo anterior, \(s=\) \texttt{"Finance"}, \(m=5\) y \(I=0\). Estos datos se pueden almacenar en variables con tipo de dato \lstinline[style=pythonstyle]|str|, \lstinline[style=pythonstyle]|int| y \lstinline[style=pythonstyle]|int|, respectivamente.
 
-Para este primer caso\footnote{Tomar en cuenta que pueden haber muchos más casos} podemos representarlo visualmente en un plano cartesiano tomando las coordenadas \(x\) y \(y\) de cada mesa:
+Lo siguiente es leer \(m\) elementos que pueden ser guardados en una lista de enteros. Para el ejemplo que se está siguiendo, esta lista se va a llamar \texttt{reportes\_financieros}:
 
+\texttt{[10, 25, 30, 5, 12]}
 
-\begin{center}
-\begin{tikzpicture}[]
-\begin{axis}[
-    axis lines=middle,
-    xmin=-8, xmax=8,
-    ymin=-3, ymax=12,
-    grid=both,
-    width=15cm,
-    height=15cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (-1,-1)
-    (5,-1)
-    (3,7)
-    (0,8)
-    (-2,11)
-    (-7,2)
-    (0,0)
-};
-
-\node at (axis cs:-1,-1) [below left] {Mesa 1};
-\node at (axis cs:5,-1) [below right] {Mesa 2};
-\node at (axis cs:3,7) [below right] {Mesa 3};
-\node at (axis cs:0,8) [above right] {Mesa 4};
-\node at (axis cs:-2,11) [above left] {Mesa 5};
-\node at (axis cs:-7,2) [below right] {Mesa 6};
-\node at (axis cs:0,0) [above right] {Origen};
-
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
+Repetir esto con cada departamento
 
 \subsection{Salida de datos esperada}
 
-Una vez entendido cómo están organizados los datos de entrada, se prosigue a entender el formato de salida requerido, los únicos detalles a tener en cuenta es el redondeo de los porcentajes a dos dígitos y aplicar lo mismo para la distancia de la mesa más lejana al origen, para más información puede visitar la sección~\ref{sub:sec:salida}. 
+Teniendo leídos los datos, la solución que se debe imprimir en consola es el nombre del departamento y en la línea siguiente todos los elementos de la lista final (con los cambios en las posiciones) separados por espacio. 
 
 \section{Solución conceptual}
 
-\subsection{Conteo de votos}
+\subsection{Obtener el índice del elemento máximo y mínimo de la lista}
+\label{sec:max-min}
 
-Se necesitan 4 variables para el conteo de votos; una para el conteo global y las otras tres para cada candidato. Cada vez que se leen los votos para un candidato en una mesa se deben agrega este valor a la variable de dicho candidato, repetir 6 veces dicha acción. Terminado el conteo individual de votos se puede asignar la suma de los votos de cada candidato a la variable global. Para obtener el porcentaje total de los votos de candidato se puede utilizar:
+Tomando en cuenta la lista \texttt{reportes\_financieros} que se mencionó en secciones anteriores. Se puede crear una función \texttt{get\_max\_index(lista)} cuya implementación siga estos pasos:
 
-\[
-\%\text{Votos Candidato} = \frac{\text{Total Votos Candidato}}{ \text{Total Votos Global} } \times 100
-\]
+\begin{enumerate}
+  \item Crear dos variables \texttt{elemento\_max} (inicializada con \texttt{reportes\_financieros[0]}) y \texttt{indice\_max} (inicializada en 0).
+  \item Iterar sobre los índices de la lista \texttt{reportes\_financieros}. Esto se hace con una variable iteradora \(i\), para el ejemplo de la lista \texttt{[10, 25, 30, 5, 12]} esta variable \(i\) va a tomar los valores de \(i = \{ 0, 1, 2, 3, 4\}\).
+  \item Comparar \texttt{reportes\_financieros[i]} con la variable \texttt{elemento\_max}, si
 
-\subsection{Distancia mesa con más votos}
-\label{sub:sec:distancia}
+ \texttt{reportes\_financieros[i]} es mayor a \texttt{elemento\_max}, entonces asigne
 
-
-Inicialmente se inicializa en \(0\) una variable de \texttt{distancia\_max} y cada vez que se reciben las coordenadas de una mesa se debe computar la distancia desde el origen hasta dicho punto. Tome en cuenta el siguiente plano cartesiano visualizando el origen y la mesa 3 (datos del ejemplo del ejercicio):
-
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines=middle,
-    xmin=-2, xmax=5,
-    ymin=-2, ymax=8,
-    grid=both,
-    width=9cm,
-    height=9cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (3,7)
-    (0,0)
-};
-
-\node at (axis cs:3,7) [above right] {$(3,7)$};
-\node at (axis cs:0,0) [above left] {$(0,0)$};
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-Se puede trazar un vector \(\vec{v}\) desde el origen hasta el punto \((3, 7)\):
-
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines=middle,
-    xmin=-2, xmax=5,
-    ymin=-2, ymax=8,
-    grid=both,
-    width=9cm,
-    height=9cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (3,7)};
-\node at (axis cs:1.5,3.5) [above left] {$\vec{v}$};
-
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (3,7)
-    (0,0)
-};
-
-\node at (axis cs:3,7) [above right] {$(3,7)$};
-\node at (axis cs:0,0) [above left] {$(0,0)$};
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
+ \texttt{reportes\_financieros[i]} a \texttt{elemento\_max} y el valor de la variable iteradora \(i\) a \texttt{indice\_max}
+  \item Repetir hasta haber recorrido el final de la lista.
+  \item Retornar \texttt{indice\_max}.
+\end{enumerate}
 
 
-La magnitud \(\lvert  \vec{v} \rvert  \) de este vector \(\vec{v}\) se interpreta dentro del problema como ``la distancia desde el origen hasta la mesa 3'', recordando clases de Física I, se sabe que para sacar la magnitud de este vector se deben sacar las componentes rectángulares \(v_x\) y \(v_y\), gráficamente:
+Para encontrar el índice del elemento mínimo de la lista se sigue un procedimiento similar para el índice máximo, únicamente se modifica el paso 3, utilizando variables con diferentes nombres, la función \texttt{get\_min\_index(lista)} deberá modificarse para incluir este paso:
 
+\begin{itemize}
+  \item Comparar \texttt{reportes\_financieros[i]} con la variable
+        \texttt{elemento\_min}, si
 
-\begin{center}
-\begin{tikzpicture}
-\begin{axis}[
-    axis lines=middle,
-    xmin=-2, xmax=5,
-    ymin=-2, ymax=8,
-    grid=both,
-    width=10cm,
-    height=10cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
+        \texttt{reportes\_financieros[i]} es menor a \texttt{elemento\_min}, entonces asigne
 
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (3,7)};
-\node at (axis cs:1.5,3.5) [above left] {$\vec{v}$};
+        \texttt{reportes\_financieros[i]} a \texttt{elemento\_min} y el valor de la variable iteradora \(i\) a \texttt{indice\_min}.
+\end{itemize}
 
-\addplot[ultra thick, green!90!black] coordinates {(0,0) (3,0)};
-\node at (axis cs:1.5,0) [above] {$v_x$};
+Tener en cuenta hacer el cambio de nombre de las variables. 
 
-\addplot[ultra thick, orange] coordinates {(3,0) (3,7)};
-\node at (axis cs:3,3.5) [right] {$v_y$};
+\subsection{Cambiar los elementos de posición en la lista}
+\label{sec:swap}
 
-% Guide lines (optional dashed projection)
-\addplot[dashed] coordinates {(3,7) (3,0)};
-\addplot[dashed] coordinates {(3,7) (0,7)};
+Hay 3 posibles maneras de hacer un cambio de variable. Usar la que más sea fácil de entender para el programador.
 
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (3,7)
-    (0,0)
-};
+\subsubsection{Usando variable temporal}
 
-\node at (axis cs:3,7) [above right] {$(3,7)$};
-\node at (axis cs:0,0) [above left] {$(0,0)$};
+Tener en cuenta la lista que se ha venido manejando:
 
-\end{axis}
-\end{tikzpicture}
-\end{center}
+\texttt{[10, 25, 30, 5, 12]}
 
-Para sacar la magnitud de \(\vec{v}\) se puede utilizar la siguiente fórmula\footnote{Para saber más información de esta fórmula puede visitar el siguiente enlace \url{https://en.wikipedia.org/wiki/Euclidean_space\#Euclidean_norm}}:
+Se debe cambiar de posición el elemento \texttt{10} (posición 0) con \texttt{30} (posición 2), esto se puede lograr utilizando una variable temporal \texttt{temp} que se utiliza como ayuda para guardar la información de uno de los elementos de la lista.
+
+\begin{enumerate}
+  \item Asignar \texttt{reportes\_financieros[2]} a \texttt{temp}
+  \item Asignar \texttt{reportes\_financieros[0]} a \texttt{reportes\_financieros[2]}
+  \item Asignar \texttt{temp} a \texttt{reportes\_financieros[0]}
+\end{enumerate}
+
+De esta manera se logra hacer el cambio de variables, \texttt{temp} queda eliminada con el \textit{garbage collector} de Python.
+
+\subsubsection{Operaciones aritméticas}
+
+Este funcionamiento se puede demostrar de manera general con un ejemplo, suponer que tenemos dos variables \(a = x_1\) y \(b = x_2\), el objetivo es que \(a\) tenga el valor de \(x_2\) y \(b\) a \(x_1\), el primer paso es sumar el valor de \(b\) a \(a\), esto resulta en:
 
 \[
-\lvert \vec{v} \rvert = \sqrt{(v_x)^2 + (v_y)^2}
+a = x_1 + x_2
 \]
 
-Una vez sacado el procedimiento para obtener la distancia, se sigue una estrategia de fuerza bruta para obtener la distancia máxima comparando entre todas las distancias (mire el gráfico de la siguiente pagina) cuál valor es mayor, si \texttt{distancia\_max} o la distancia recién obtenida del cálculo.  
-
-
-\begin{center}
-\begin{tikzpicture}[]
-\begin{axis}[
-    axis lines=middle,
-    xmin=-8, xmax=8,
-    ymin=-3, ymax=12,
-    grid=both,
-    width=15cm,
-    height=15cm,
-    xlabel={$x$},
-    ylabel={$y$},
-    xtick distance=1,
-    ytick distance=1,
-]
-
-% Points
-\addplot[only marks, mark=*, mark size=2.5pt, red]
-coordinates {
-    (-1,-1)
-    (5,-1)
-    (3,7)
-    (0,8)
-    (-2,11)
-    (-7,2)
-    (0,0)
-};
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (-1,-1)};
-\node at (axis cs:0.25,-0.8) [above left] {$\vec{m}_1$};
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (5,-1)};
-\node at (axis cs:3,-0.7) [below right] {$\vec{m}_2$};
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (3,7)};
-\node at (axis cs:1.5,3.5) [above left] {$\vec{m}_3$};
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (0,8)};
-\node at (axis cs:0,4.5) [right] {$\vec{m}_4$};
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (-2,11)};
-\node at (axis cs:-1.3,7) [left] {$\vec{m}_5$};
-
-\addplot[{}-{latex}, ultra thick, blue] coordinates {(0,0) (-7,2)};
-\node at (axis cs:-3.5,1.3) [above left] {$\vec{m}_6$};
-
-\node at (axis cs:-1,-1) [below left] {Mesa 1};
-\node at (axis cs:5,-1) [below right] {Mesa 2};
-\node at (axis cs:3,7) [below right] {Mesa 3};
-\node at (axis cs:0,8) [above right] {Mesa 4};
-\node at (axis cs:-2,11) [above left] {Mesa 5};
-\node at (axis cs:-7,2) [above right] {Mesa 6};
-\node at (axis cs:0,0) [above right] {Origen};
-
-
-\end{axis}
-\end{tikzpicture}
-\end{center}
-
-En conclusión, sacar la magnitud para todos los vectores \(\vec{m_i} \ (1 \leq i \leq 6)\) y guardar en \texttt{distancia\_max} la magnitud máxima.
-
-\subsection{Índice Energético de Votación}
-\label{sub:sec:iev}
-
-Se nos pide sacar el IEV de la mesa que posee más votos recogidos. Para obtener la mesa con mayor votos se crean dos variables globales \texttt{mesa\_iev} y \texttt{votos\_iev} inicializadas en 0, cada vez que se lea cada línea y se extraigan los votos para cada candidato se compara si ese resultado es mayor al global \texttt{votos\_iev} entonces se asigna \texttt{votos\_iev} a la suma de los votos de la mesa actual y guarde el número de la mesa en \texttt{mesa\_iev}, si no, continue con el programa.   
-
-Una vez obtenida qué mesa tiene la mayor cantidad de votos se puede aplicar la fórmula dada en el problema:
+Ahora, el valor actual de \(a\) se debe restar con el valor actual de \(b\):
 
 \[
-IEV = \lceil \sqrt[3]{V} \rceil
+b = (\overbrace{x_1 + x_2}^{a}) - x_2
 \]
 
-Debido a que se está permitido usar las funciones \lstinline[style=pythonstyle]|cbrt()| y \lstinline[style=pythonstyle]|ceil()| del módulo \lstinline[style=pythonstyle]|math|, realizar estas dos operaciones es trivial. Sin embargo, no se puede utilizar la función \lstinline[style=pythonstyle]|fact()|, por lo tanto, toca realizar este cálculo utilizando la definición del factorial para cualquier número entero positivo \(n\):
+Se puede cancelar ambos \(x_2\) de la ecuación:
 
 \[
-n! = \prod_{i=1}^n i 
+  b = x_1 + \cancel{x_2} - \cancel{x_2} 
 \]
 
-Modificando para el caso del IEV, se cómputa entonces:
+Quedando finalmente \(b = x_1\). Ahora únicamente falta restar el valor actual de \(b\) con \(a\):
 
 \[
-IEV = \prod_{i=1}^{ \lceil \sqrt[3]{V} \rceil  } i
+a = x_1 + x_2 - x_1
 \]
 
-Donde \(V\) son los votos de la mesa con mayor votos recaudados.
+Cancelando ambos términos opuestos \(x_1\):
+
+\[
+a = \cancel{x_1} + x_2 - \cancel{x_1}
+\]
+
+Finalmente, queda \(a = x_2\), cumpliendo con el objetivo del cambio de variable.
+
+Los pasos a seguir algorítmicamente:
+
+\begin{enumerate}
+  \item Asigne \texttt{reportes\_financieros[0]} + \texttt{reportes\_financieros[2]} a \texttt{reportes\_financieros[0]}
+  \item Asigne \texttt{reportes\_financieros[0]} - \texttt{reportes\_financieros[2]} a \texttt{reportes\_financieros[2]}
+  \item Asigne \texttt{reportes\_financieros[0]} - \texttt{reportes\_financieros[2]} a \texttt{reportes\_financieros[0]}
+\end{enumerate}
+
+
+\subsubsection{Operaciones de XOR}
+
+Una operación XOR (\(\oplus\)) es una compuerta lógica que da verdadero cuando solo una de las entradas es verdadero. 
+
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|cc|c|}
+    \(x_1\)&\(x_2\)& \(x_1 \oplus x_2\) \\ \hline
+    0 & 0 & 0 \\
+    0 & 1 & 1 \\
+    1 & 0 & 1 \\
+    1 & 1 & 0 
+  \end{tabular}
+\end{table}
+
+Para hacer un cambio de variable podemos inicializar dos variables \(a = x_1\) y \(b = x_2\) y hacer \(a\) XOR \(b\):
+
+\[
+a = a \oplus b = x_1 \oplus x_2
+\]
+
+Ahora se vuelve a realizar esta misma operación de \(a\) XOR \(b\) pero ahora asignando a la variable \(b\):
+
+\[
+b = a \oplus b = (x_1 \oplus x_2) \oplus x_2
+\]
+
+Se va a utilizar tres posibles propiedades de la operación XOR:
+
+\begin{itemize}
+  \item \(x \oplus x = 0\) 
+  \item \(x \oplus 0 = x\)
+  \item Asosiativa y conmutativa.
+\end{itemize}
+
+Por lo tanto, \(b\) se convierte en:
+
+\[
+b = x_1 \oplus (x_2 \oplus x_2) = x_1 \oplus 0 = x_1 
+\]
+
+Se hace la misma operación con la variable \(a\):
+
+\[
+a = a \oplus b = (x_1 \oplus x_2) \oplus x_1
+\]
+
+Y se aplican las mismas propiedades:
+
+\[
+a = (x_1 \oplus x_1) \oplus x_2 = 0 \oplus x_2 = x_2
+\]
+
+Y así \(a\) termina con el valor original de \(b\) y viceversa.
+
+Algorítmicamente los pasos a seguir en el problema es hacer esta misma operación XOR como se explicó anteriormente, en la mayoría de lenguajes de programación la operación XOR se hace con el operador \texttt{\^}, los pasos a seguir son:
+
+\begin{enumerate}
+  \item Asignar \texttt{reportes\_financieros[0] \^\ reportes\_financieros[2]} a \texttt{reportes\_financieros[0]}
+  \item Asignar \texttt{reportes\_financieros[0] \^\ reportes\_financieros[2]} a \texttt{reportes\_financieros[2]}
+  \item Asignar \texttt{reportes\_financieros[0] \^\ reportes\_financieros[2]} a \texttt{reportes\_financieros[0]}
+\end{enumerate}
 
 \section{Código modelo}
-\label{sec:codigo}
-
 
 Se va a explicar parte a parte una posible solución al problema, recuerde que puede probar con diferentes implementaciones o incluso formulando más soluciones al problema, se invita al estudiante que haga ese ejercicio.
 
-En primer lugar, se importa el modulo de \lstinline[style=pythonstyle]|math| para utilizar las funciones de \lstinline[style=pythonstyle]|ceil()|, \lstinline[style=pythonstyle]|sqrt()| y \lstinline[style=pythonstyle]|cbrt()|.  
+\subsection{Método para obtener el índice del elemento máximo y mínimo de una lista}
+
+En primer lugar se debe definir qué es lo que se debe ingresar al método y qué debe retornar, es decir, recibir una lista de enteros y retornar un entero. Esto en Python se declara de la siguiente manera:
 
 \begin{lstlisting}[style=pythonstyle]
-import math
+def get_max_index(lista: list[int]) -> int:
 \end{lstlisting}
 
-\subsection{Declaración de variables}
-
-Ahora, se declaran 9 variables para ayudar al almacenamiento de los datos:
-
-\begin{itemize}
-  \item \texttt{total\_votos}: Conteo global de votos.
-  \item \texttt{andrea}: Votos totales de Andrea.
-  \item \texttt{bobby}: Votos totales de Bobby.
-  \item \texttt{claudia}: Votos totales de Claudia.
-  \item \texttt{mesa\_lejana}: Número de la mesa más lejana al origen.
-  \item \texttt{distancia}: Distancia desde el origen hasta la mesa más lejana.
-  \item \texttt{IEV}: Índice Energético de Votación de la mesa con mayor número de votos.
-  \item \texttt{mesa\_iev}: Número de la mesa con más votos recogidos.
-  \item \texttt{votos\_iev}: Número de votos de la mesa con más votos recogidos. 
-\end{itemize}
-
-Teniendo el contexto del significado de cada variable se pueden inicializar cada una de ellas de la siguiente manera:
+Luego, se debe inicializar las dos variables de \texttt{elemento\_max} y \texttt{indice\_max} que se mencionó anteriormente:
 
 \begin{lstlisting}[style=pythonstyle]
-total_votos = 0
-andrea = 0
-bobby = 0
-claudia = 0
-mesa_lejana = 0
-distancia = -1
-IEV = 1
-mesa_iev = 0
-votos_iev = 0
+def get_max_index(lista: list[int]) -> int:
+    elemento_max = lista[0]
+    indice_max = 0
 \end{lstlisting}
+
+Ahora, se debe comenzar la iteración sobre los índices de la lista:
+
+\begin{lstlisting}[style=pythonstyle]
+def get_max_index(lista: list[int]) -> int:
+    elemento_max = lista[0]
+    indice_max = 0
+    for i in range(len(lista)):
+\end{lstlisting}
+
+Y se sigue la lógica que se mencionó en la sección~\ref{sec:max-min}:
+
+\begin{lstlisting}[style=pythonstyle]
+def get_max_index(lista: list[int]) -> int:
+    elemento_max = lista[0]
+    indice_max = 0
+    for i in range(len(lista)):
+        if (lista[i] > elemento_max):
+            elemento_max = lista[i]
+            indice_max = i
+\end{lstlisting}
+
+Finalmente, retornar \texttt{indice\_max}:
+
+\begin{lstlisting}[style=pythonstyle]
+def get_max_index(lista: list[int]) -> int:
+    elemento_max = lista[0]
+    indice_max = 0
+    for i in range(len(lista)):
+        if (lista[i] > elemento_max):
+            elemento_max = lista[i]
+            indice_max = i
+    return indice_max
+\end{lstlisting}
+
+Ahora, se implementa una estructura similar para el método de obtener el índice del elemento mínimo de la lista:
+
+\begin{lstlisting}[style=pythonstyle]
+def get_max_index(lista: list[int]) -> int:
+    elemento_min = lista[0]
+    indice_min = 0
+    for i in range(len(lista)):
+\end{lstlisting}
+
+Lo único es cambiar la condición de acuerdo a la lógica previamente mencionada:
+
+\begin{lstlisting}[style=pythonstyle]
+def get_max_index(lista: list[int]) -> int:
+    elemento_min = lista[0]
+    indice_min = 0
+    for i in range(len(lista)):
+        if (lista[i] < elemento_min):
+            elemento_min = lista[i]
+            indice_min = i
+    return indice_min
+\end{lstlisting}
+
 
 \subsection{Lectura de datos}
 
-Ahora, se deben leer los datos de entrada, se sabe que solo van a haber 6 líneas se puede realizar un ciclo \lstinline[style=pythonstyle]|for| con rango de 1 a 6 (tenga en cuenta que \(i\) va a ser el número de la mesa), incluyendo ambos extremos.
+Una vez implementadas los métodos de ayuda, el enunciado establece que se nos da un primer dato \(n\) que establece el número de departamentos a leer, si este número es igual a 0 entonces se deja de leer datos: 
 
 \begin{lstlisting}[style=pythonstyle]
-for i in range(1, 7):
+n = int(input())
+
+while (n != 0):
 \end{lstlisting}
 
-Dentro del ciclo \lstinline[style=pythonstyle]|for| se guardan los datos de entrada utilizando la función \lstinline[style=pythonstyle]|map()|, esta función toma dos parámetros; una función y un \textit{objeto iterable}. A cada elemento del \textit{objeto iterable} (e.j., una lista) se le aplica la función colocada en el primer parámetro\footnote{Para más información del funcionamiento de la función \lstinline[style=pythonstyle]|map()| puede visitar la documentación oficial \url{https://docs.python.org/3/library/functions.html\#map}}. Utilizando el desempaquetado de tuplas de Python se le pueden asignar a 6 variables la línea de datos de entrada\footnote{Se recomienda realizar la lectura de esta sección de la documentación de Python \url{https://docs.python.org/3/tutorial/datastructures.html\#tuples-and-sequences}}:
+Ahora, se deben leer los \(n\) departamentos, se utilizar un ciclo \lstinline[style=pythonstyle]|for| con rango hasta \(n\), se utiliza una variable iteradora de \texttt{\_} que generalmente se utiliza para nombre de una variable que no se va a utilizar dentro del código, únicamente se utiliza el ciclo para leer los \(n\) departamentos
 
 \begin{lstlisting}[style=pythonstyle]
-x, y, a, b, c = map(int, input().split())
+for _ in range(n):
 \end{lstlisting}
 
-Por ejemplo, cuando el usuario digite:
-
-\begin{verbatim}
--1 -1 78 50 90
-\end{verbatim}
-
-Las variables \texttt{x}, \texttt{y}, \texttt{a}, \texttt{b} y \texttt{c} van a tener los valores de; -1, -1, 78, 50, y 90, respectivamente. 
-
-\textbf{Recordatorio:} La función \lstinline[style=pythonstyle]|input()| retorna una cadena y \lstinline[style=pythonstyle]|.split()| convierte una cadena a lista usando un separador, por defecto es el carácter de espacio, es decir, cuando el usuario escriba:
-
-\begin{verbatim}
-"-1 -1 78 50 90"
-\end{verbatim}
-
-Se aplica el \lstinline[style=pythonstyle]|split()| quedando como:
+Ahora, toca leer una cadena con el nombre del departamento, la cantidad de empleados y el índice para cambiar la posición de la lista, esto se logra:
 
 \begin{lstlisting}[style=pythonstyle]
-["-1", "-1", "78", "50", "90"]
+data = input().split()
 \end{lstlisting}
 
-Permitiendo que se pueda aplicar la función \lstinline[style=pythonstyle]|map()| explicada anteriormente.
+La línea de \lstinline[style=pythonstyle]|data = input().split()| crea una lista con la cadena que ingresan los datos, por ejemplo, si se ingresa la siguiente cadena:
 
-\subsection{Votos totales para cada candidato}
+\texttt{"Finance 5 0"}
 
-Una vez obtenido los votos de cada candidato en la mesa \(i\) se añade a su respectiva variable global los votos de esa mesa:
+Después de esa línea, la variable \texttt{data} va a ser igual a:
 
 \begin{lstlisting}[style=pythonstyle]
-andrea += a
-bobby += b
-claudia += c
+print(data)
+["Finance", "5", "0"]
 \end{lstlisting}
 
-\subsection{Distancia de la i-ésima mesa de votación}
-
-Como también se tienen las coordenadas de la mesa \(i\) se obtiene la distancia desde el origen hasta le mesa \(i\) utilizando lo explicado en la sección~\ref{sub:sec:distancia} y comparar si esta es mayor a la variable declarada anteriormente de \texttt{distancia}:
+Ahora, se organizan los datos en tres variables; una cadena y dos enteros.
 
 \begin{lstlisting}[style=pythonstyle]
-dist_actual = math.sqrt(x**2 + y**2)
-
-if (dis_actual > distancia):
-    distancia = dist_actual
-    mesa_lejana = i
+department = data[0]
+employees, I = int(data[1]), int(data[2])
 \end{lstlisting}
 
-\subsection{Mesa con más votos recogidos}
-  
-Ahora, se debe obtener cuál fue la mesa con más votos y cuántos tuvo utilizando la suma de las variables \texttt{a}, \texttt{b} y \texttt{c}, comparando con la variable anteriormente declarada \texttt{votos\_iev}:
+Se debe de leer los reportes financieros, estos vienen ingresados en una cadena, se deben transformar a una lista con ayuda de la función \lstinline[style=pythonstyle]|list| y \lstinline[style=pythonstyle]|map|, se recomienda leer la documentación de python para la función \lstinline[style=pythonstyle]|map|
 
 \begin{lstlisting}[style=pythonstyle]
-if (a + b + c > votos_iev):
-    votos_iev = a + b + c
-    mesa_iev = i
+financial_reports = list(map(int, input().split()))
 \end{lstlisting}
 
-\subsection{Votos totales en las elecciones}
-
-Esas fueron las acciones que debe repetir ese ciclo \lstinline[style=pythonstyle]|for|, una vez finalizado se puede obtener la cantidad de votos en las elecciones utilizando las variables declaradas inicialmente:
+Por último, por fuera del ciclo \lstinline[style=pythonstyle]|for| se vuelve a pedir \(n\)
 
 \begin{lstlisting}[style=pythonstyle]
-total_votos = andrea + bobby + claudia
+n = int(input())
 \end{lstlisting}
 
-\subsection{Índice Energético de Votación}
-
-El último dato que se necesita sacar es el IEV, teniendo en cuenta la teoría de la sección~\ref{sub:sec:iev} se itera desde un intervalo de \([1, \lceil \sqrt[3]{\text{\texttt{total\_votos}}} \rceil]\) y se múltiplica por \(i\) el valor actual de \texttt{IEV}, reasignando este mismo a dicha operación:
+Esta parte completa de lectura de datos se ve conjunta como:
 
 \begin{lstlisting}[style=pythonstyle]
-for i in range(1, math.ceil(math.cbrt(votos_iev))+1):
-    IEV *= i
+n = int(input())
+
+while (n != 0):
+
+    for _ in range(n):
+        data = input().split()
+        department = data[0]
+        employees, I = int(data[1]),  int(data[2])
+        financial_reports = list(map(int, input().split()))
+
+    n = int(input())
 \end{lstlisting}
 
-\subsection{Salida de resultados}
-\label{sub:sec:salida}
+\subsection{Cambio de elementos de la lista}
 
-Ya obtenidos todos los datos necesarios se utiliza la ayuda de la función \lstinline[style=pythonstyle]|round()| para redondear los datos necesarios, además de computar el porcentaje de votos totales obtenidos por cada candidato. La salida que va a ver el usuario entonces se codifica\footnote{El penúltimo dato se debe escribir como ``Mesa más lejana'', se escribe sin tilde debido a errores con la compilación de \LaTeX} como:
+Lo primero es obtener el índice del elemento máximo de la lista, es decir, dentro del contexto del problema es el amigo de Andrew, para esto se llama a la función \lstinline[style=pythonstyle]|get_max_index()| 
 
 \begin{lstlisting}[style=pythonstyle]
-print(f"Total Votos: {total_votos}")
-print(f"Votos Andrea: {andrea} {round(andrea/total_votos*100, 2)}%")
-print(f"Votos Bobby: {bobby} {round(bobby/total_votos*100, 2)}%")
-print(f"Votos Claudia: {claudia} {round(claudia/total_votos*100, 2)}%")
-print(f"Mesa mas lejana: {mesa_lejana} {round(distancia, 2)}")
-print(f"IEV: {mesa_iev} {IEV}")
+I_max = get_max_index(financial_reports)
 \end{lstlisting}
 
-
-Finalmente, se puede ensamblar cada pieza de código en uno solo como se muestra a continuación:
+En el problema se comenta que Andrew nos dará un índice para cambiar el elemento con el del máximo de la lista, este índice ya se tiene guardado en la variable \texttt{I}, si es diferente a -1, entonces podemos hacer el cambio con el índice que dice Andrew:
 
 \begin{lstlisting}[style=pythonstyle]
-import math
+if (I != -1):
+    financial_reports[I], financial_reports[I_max] = financial_reports[I_max], financial_reports[I]
+\end{lstlisting}
 
-total_votos = 0
-andrea = 0
-bobby = 0
-claudia = 0
-mesa_lejana = 0
-distancia = -1
-IEV = 1
-mesa_iev = 0
-votos_iev = 0
+Se hace entonces el cambio de elemento utilizando la lógica de XOR pero en forma \textit{pythonesca}, sin embargo, se puede hacer sin problema de las diferentes formas que se explicaron en la sección~\ref{sec:swap}.
 
-for i in range(1, 7):
-    x, y, a, b, c = map(int, input().split())
-    dist_actual = math.sqrt(x**2 + y**2)
+En caso de que Andrew esté inseguro de qué elemento cambiar, él nos dará un -1, para este caso el cambio lo debemos hacer con el elemento mínimo de la lista, en primer lugar se obtiene el índice del elemento mínimo de la lista y posteriormente se hace el cambio. 
 
-    if (dist_actual > distancia):
-        distancia = dist_actual
-        mesa_lejana = i
+\begin{lstlisting}[style=pythonstyle]
+else:
+    I_min = get_min_index(financial_reports)
+    financial_reports[I], financial_reports[I_min] = financial_reports[I_min], financial_reports[I]
+\end{lstlisting}
 
-    if (a + b + c > votos_iev):
-        votos_iev = a + b + c
-        mesa_iev = i
+\subsection{Salida de datos}
 
-    andrea += a
-    bobby += b
-    claudia += c
-total_votos = andrea + bobby + claudia
+La salida debe imprimir el nombre del departamento acompañado de dos puntos, para esto se utiliza la variable \texttt{department}:
 
-for i in range(1, math.ceil(math.cbrt(votos_iev))+1):
-    IEV *= i
+\begin{lstlisting}[style=pythonstyle]
+print(f"{department}:")
+\end{lstlisting}
 
-print(f"Total Votos: {total_votos}")
-print(f"Votos Andrea: {andrea} {round(andrea/total_votos*100, 2)}%")
-print(f"Votos Bobby: {bobby} {round(bobby/total_votos*100, 2)}%")
-print(f"Votos Claudia: {claudia} {round(claudia/total_votos*100, 2)}%")
-print(f"Mesa mas lejana: {mesa_lejana} {round(distancia, 2)}")
-print(f"IEV: {mesa_iev} {IEV}")
+Ahora, en la siguiente línea que se debe imprimir se debe imprimir los elementos de la lista separados por espacio, por esto mismo, se itera sobre los elementos de la lista de \texttt{financial\_reports} y se modifica el parámetro de la función \lstinline[style=pythonstyle]|print()| para que en lugar de imprimir un final de línea cada vez que se llame \lstinline[style=pythonstyle]|print()| se imprima un caracter de espacio.
+
+\begin{lstlisting}[style=pythonstyle]
+for i in financial_reports:
+    print(i, end=" ")
+\end{lstlisting}
+
+Por último, se imprime una nueva línea para que quede en el formato correcto para imprimir el siguiente departamento:
+
+\begin{lstlisting}[style=pythonstyle]
+print()
+\end{lstlisting}
+
+\subsection{Código final}
+
+Ensamblando cada parte del código obtenemos:
+
+
+\begin{lstlisting}[style=pythonstyle]
+def get_max_index(lista: list[int]) -> int:
+    elemento_max = lista[0]
+    indice_max = 0
+    for i in range(len(lista)):
+        if (lista[i] > elemento_max):
+            elemento_max = lista[i]
+            indice_max = i
+    return indice_max
+
+def get_min_index(lista: list[int]) -> int:
+    elemento_min = lista[0]
+    indice_min = 0
+    for i in range(len(lista)):
+        if (lista[i] < elemento_min):
+            elemento_min = lista[i]
+            indice_min = i
+    return indice_min
+
+n = int(input())
+
+while (n != 0):
+    for _ in range(n):
+        data = input().split()
+        department = data[0]
+        employees, I = int(data[1]),  int(data[2])
+        financial_reports = list(map(int, input().split()))
+        I_max = get_max_index(financial_reports)
+
+        if (I != -1):
+            financial_reports[I], financial_reports[I_max] = financial_reports[I_max], financial_reports[I]
+        else:
+            I_min = get_min_index(financial_reports)
+            financial_reports[I], financial_reports[I_min] = financial_reports[I_min], financial_reports[I]
+
+        print(f"{department}:")
+        for i in financial_reports:
+            print(i, end=" ")
+        print()
+
+    n = int(input())
+   
 \end{lstlisting}
 
 
