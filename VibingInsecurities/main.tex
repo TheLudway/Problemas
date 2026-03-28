@@ -1,0 +1,335 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2cm}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins,breakable}
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[spanish]{babel}
+
+\lstdefinestyle{pythonstyle}{
+  language=Python,
+  backgroundcolor=\color{gray!5},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{teal},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=true,
+  frame=single,
+  rulecolor=\color{gray!40},
+  captionpos=b,
+  keepspaces=true,
+  morekeywords={ceil,cbrt,round,split},
+}
+
+
+% --- Formatting ---
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{30pt}
+\setlength{\footskip}{20pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+% Left header (university and exam info)
+\rhead{%
+   \small
+   Universidad Jorge Tadeo Lozano\\
+   Estructuras de Datos - Grupo 2\\
+   Prueba de Programación II 
+}
+
+% Right header (date, professor, monitor)
+\lhead{%
+   \small
+   \textbf{Fecha}: \today \\
+   \textbf{Profesor:} Alejandro Franco \\
+   \textbf{Monitor:} Ludwig Alvarado
+}
+
+\cfoot{\thepage}
+
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Environment for samples ---
+\newenvironment{sample}[2]{
+  \begin{tcolorbox}[title=Prueba \##1, colback=white, colframe=black, sharp corners,
+    fonttitle=\bfseries, breakable]
+    \begin{tabular}{|p{0.45\linewidth}|p{0.45\linewidth}|}
+      \hline
+      \textbf{Entrada} & \textbf{Salida} \\
+      \hline
+      }{\\ \hline
+    \end{tabular}
+  \end{tcolorbox}
+}
+
+% --- Document ---
+\begin{document}
+
+\begin{center}
+  {\LARGE \bf Vibing Insecurities}\\[1ex]
+  Autor: Ludwig Alvarado
+\end{center}
+
+La Unidad Técnica de Agentes, Detectives y Operaciones (UTADEO) es una organización clandestina que se dedica al espionaje académico y a la manipulación de registros de calificaciones. Muchos estudiantes recurren a sus servicios para alterar sus notas, mientras que la organización identifica posibles clientes analizando sus inseguridades durante los exámenes. A este proceso lo denominan \textit{vibing insecurities}.
+
+Además, UTADEO se aprovecha del auge del \textit{vibe coding}, donde múltiples instituciones han delegado el desarrollo de sus sistemas a modelos de lenguaje y programadores poco rigurosos. Estas vulnerabilidades permiten que el equipo de inyección SQL modifique la base de datos académica sin ser detectado.
+
+Tú haces parte de este equipo. Tu misión es implementar un sistema que procese una serie de operaciones sobre los registros de estudiantes y sus calificaciones.
+
+Cada estudiante tiene:
+\begin{itemize}
+    \item Un nombre único
+    \item Una lista de calificaciones
+\end{itemize}
+
+El puntaje final de un estudiante se define como el promedio de sus calificaciones.
+
+\subsection*{Entrada del programa}
+
+La primera línea contiene un entero $N$, el número inicial de estudiantes.
+
+Las siguientes $N$ líneas contienen la información de cada estudiante en el formato:
+
+\texttt{name k score\_1 score\_2 ... score\_k}
+
+Donde:
+\begin{itemize}
+    \item \texttt{name} es una cadena en minúsculas
+    \item $k$ es la cantidad de calificaciones
+\end{itemize}
+
+Luego se proporciona un entero $Q$ — el número de consultas.
+
+Las siguientes $Q$ líneas contienen una de las siguientes operaciones:
+
+\begin{itemize}
+    \item \texttt{ADD name k score\_1 ... score\_k}
+    \item \texttt{UPDATE name k score\_1 ... score\_k}
+    \item \texttt{APPEND name score}
+    \item \texttt{TOP k}
+    \item \texttt{AVERAGE name}
+    \item \texttt{GLOBAL\_AVERAGE}
+\end{itemize}
+
+\subsection*{Descripción de las operaciones}
+
+A continuación se describe el comportamiento exacto de cada operación:
+
+\begin{itemize}
+
+\item \texttt{ADD name k score\_1 ... score\_k}
+
+Agrega un nuevo estudiante con nombre \texttt{name} y una lista de $k$ calificaciones.
+
+\begin{itemize}
+    \item Si el estudiante no existe, se inserta en el sistema con sus calificaciones.
+    \item Si el estudiante ya existe, la operación se ignora y no se realiza ningún cambio.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\item \texttt{UPDATE name k score\_1 ... score\_k}
+
+Reemplaza completamente la lista de calificaciones de un estudiante existente.
+
+\begin{itemize}
+    \item Si el estudiante existe, su lista de calificaciones anterior se elimina y se reemplaza por la nueva.
+    \item Si el estudiante no existe, la operación se ignora.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\item \texttt{APPEND name score}
+
+Agrega una nueva calificación al final de la lista de un estudiante.
+
+\begin{itemize}
+    \item Si el estudiante existe, la calificación se añade a su lista.
+    \item Si el estudiante no existe, la operación se ignora.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\item \texttt{TOP k}
+
+Consulta los $k$ estudiantes con mejor desempeño según los siguientes criterios:
+
+\begin{enumerate}
+    \item Mayor promedio de calificaciones
+    \item En caso de empate, mayor cantidad de calificaciones
+    \item En caso de empate, menor nombre en orden lexicográfico
+\end{enumerate}
+
+\begin{itemize}
+    \item Se deben imprimir exactamente $k$ estudiantes o todos los existentes si hay menos de $k$.
+    \item Cada estudiante se imprime en una línea en el formato:
+    
+    \texttt{name average}
+    
+    \item El promedio debe mostrarse con exactamente 2 decimales.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\item \texttt{AVERAGE name}
+
+Consulta el promedio de un estudiante específico.
+
+\begin{itemize}
+    \item Si el estudiante existe, se imprime su promedio con exactamente 2 decimales.
+    \item Si el estudiante no existe, se imprime:
+    
+    \texttt{NA}
+\end{itemize}
+
+\vspace{0.3cm}
+
+\item \texttt{GLOBAL\_AVERAGE}
+
+Calcula el promedio global considerando todas las calificaciones de todos los estudiantes.
+
+\begin{itemize}
+    \item Se deben sumar todas las calificaciones y dividir entre el total de calificaciones.
+    \item El resultado se imprime con exactamente 2 decimales.
+    \item Se garantiza que siempre existe al menos una calificación en el sistema al momento de esta consulta.
+\end{itemize}
+
+\end{itemize}
+
+\subsection*{Salida del programa}
+
+Para cada consulta que genere salida, imprime el resultado en una nueva línea.
+
+\begin{itemize}
+    \item \texttt{TOP k}: imprime los $k$ mejores estudiantes, cada uno en una línea como:
+    
+    \texttt{name average}
+    
+    \item \texttt{AVERAGE name}: imprime el promedio con 2 decimales, o \texttt{NA} si no existe
+
+    \item \texttt{GLOBAL\_AVERAGE}: imprime el promedio global con 2 decimales
+\end{itemize}
+
+\textbf{Nota:}
+\begin{itemize}
+    \item \texttt{ADD}, \texttt{UPDATE} y \texttt{APPEND} no generan salida
+    \item Las salidas deben imprimirse en el orden de las consultas
+\end{itemize}
+
+\subsection*{Restricciones}
+
+\begin{itemize}
+    \item $1 \leq N, Q \leq 10^5$
+    \item $1 \leq k \leq 100$
+    \item $0 \leq score \leq 10^6$
+    \item Longitud del nombre $\leq 20$
+\end{itemize}
+
+\subsection*{Caso de prueba de ejemplo}
+
+\begin{sample}{1}{}
+\texttt{2}
+
+\texttt{alice 3 90 80 100}
+
+\texttt{bob 2 70 80}
+
+\texttt{7}
+
+\texttt{TOP 2}
+
+\texttt{APPEND bob 100}
+
+\texttt{TOP 2}
+
+\texttt{AVERAGE alice}
+
+\texttt{GLOBAL\_AVERAGE}
+
+\texttt{UPDATE alice 2 50 50}
+
+\texttt{TOP 2}
+&
+\texttt{alice 90.00}
+
+\texttt{bob 75.00}
+
+\texttt{bob 83.33}
+
+\texttt{alice 90.00}
+
+\texttt{90.00}
+
+\texttt{86.67}
+
+\texttt{bob 83.33}
+
+\texttt{alice 50.00}
+\end{sample}
+
+\subsection*{Notas}
+
+\begin{itemize}
+    \item El promedio se calcula como $\frac{\sum scores}{|scores|}$
+    \item Todas las salidas numéricas deben imprimirse con exactamente 2 decimales
+    \item Si una operación hace referencia a un estudiante inexistente, debe ignorarse (excepto en \texttt{AVERAGE}, donde se imprime \texttt{NA})
+    \item Se recomienda evitar recalcular promedios desde cero en cada consulta por eficiencia
+\end{itemize}
+
+\subsection*{Aspectos Importantes}
+
+\begin{enumerate}
+  \item La prueba se resolverá en \textbf{2 momentos}:
+        \begin{itemize}
+            \item Desarrollo del algoritmo en papel \textbf{(3.0 puntos)}.
+            \item Implementación en el editor de código \textbf{(2.0 puntos)}.
+        \end{itemize}
+  \item Para leer los datos puede utilizar la función \lstinline[style=pythonstyle]|split()| de la clase \lstinline[style=pythonstyle]|str| y de ahí indexar los datos en un diccionario con llave de tipo \lstinline[style=pythonstyle]|str| y valor de tipo \lstinline[style=pythonstyle]|list|. Por ejemplo, para procesar la línea \texttt{alice 3 90 80 100} esto se puede guardar dentro de un diccionario como: 
+        \begin{lstlisting}[style=pythonstyle]
+>>> entrada = input().split()
+>>> diccionario = {}
+>>> diccionario[entrada[0]] = list(map(int, entrada[1::]))
+>>> print(diccionario)
+{"alice": [3, 90, 80, 100]}
+        \end{lstlisting}
+
+  \item Recuerda que la función \lstinline[style=pythonstyle]|round()| ayuda a redondear números decimales. Por ejemplo, el número \texttt{3.141592653589793} al aplicar \lstinline[style=pythonstyle]|round(3.141592653589793, 2)| esto retorna en \texttt{3.14}
+
+  \item Este ejercicio evalúa los temas vistos hasta el \textbf{segundo corte}.
+
+  \item No es necesario usar estructuras de datos avanzadas ni importar librerías externas, \textbf{ante la duda pregunte al profesor o monitore, de lo contrario, su nota se verá afectada.}
+
+  \item No es necesario validar errores de entrada.
+
+  \item La única conversión de tipo de datos debe ser al momento de la lectura de los mismos. No es necesario volver a convertir el tipo de dato de las variables.
+
+  \item El formato de salida debe coincidir exactamente con el especificado. Cualquier diferencia será considerada incorrecta.
+\end{enumerate}
+
+
+
+
+
+\end{document}
