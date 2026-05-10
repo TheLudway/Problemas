@@ -123,7 +123,7 @@
   framerule=0.5pt,
   tabsize=4,
   captionpos=b,
-  morekeywords={ceil,cbrt,fact,sqrt},
+  morekeywords={ceil,cbrt,fact,sqrt,True,False},
 }
 
 \lstdefinestyle{cppstyle}{
@@ -266,11 +266,14 @@ Se debe iniciar el programa leyendo datos como tipo \lstinline[style=pythonstyle
 s = input()
 
 while (s != '0'):
+    flag = True
     ...
     s = input()
 \end{lstlisting}
 
 Donde \texttt{...} es la lógica que se implementará en próximos pasos.
+
+A su vez, se utiliza una variable \texttt{flag} que se utilizará para validar imprimir luego la respuesta, esta va a ser únicamente modificada si encuentra algo invalido.
 
 
 \subsection{Creación del stack}
@@ -280,16 +283,109 @@ Hay múltiples maneras de implementar el stack que se necesita para el problema:
 \begin{itemize}
   \item Usando la clase \lstinline[style=pythonstyle]{deque} del modulo \lstinline[style=pythonstyle]{collections}
   \item Implementar desde cero un modulo \texttt{stack} con sus clases de nodo y stack.
+  \item Usar la estructura ya definida en python de \lstinline[style=pythonstyle]{list} y sus métodos de:
+        \begin{itemize}
+          \item \lstinline[style=pythonstyle]{append(x)} para agregar elementos al final de la lista.
+          \item \lstinline[style=pythonstyle]{pop()} eliminar el último elemento de la lista.
+        \end{itemize}
 \end{itemize}
 
+Por simplicidad se va a utilizar \lstinline[style=pythonstyle]{list}, tomar en cuenta que esto no es un \textit{stack} puramente, sino más bien, se utiliza como una interpretación de la misma.
 
-\subsection{Votos totales para cada candidato}
+Para crearlo, simplemente se declara una variable \texttt{stack} como una lista vacía.
+
+\begin{lstlisting}[style=pythonstyle]
+stack = []
+\end{lstlisting}
 
 
+\subsection{Recorrer el string de entrada}
 
+Una de las claves de este ejercicio es reconocer el \textit{string} del \textit{stack}. Para verificar la validez del \textit{stack} se debe \textbf{recorrer} el \textit{string}, esto se puede realizar con un ciclo \lstinline[style=pythonstyle]{for}, una posible manera es iterando sobre los índices de la cadena:
 
+\begin{lstlisting}[style=pythonstyle]
+for i in range(len(s)):
+\end{lstlisting}
 
+Para este ciclo, los posibles valores de la variable \(i\) van a ser \( \{0, 1, 2, \cdots, \lvert s \rvert - 1 \}\). Es decir, desde 0 hasta la longitud de la cadena menos 1.
 
+\subsection{Validar paréntesis de apertura}
+
+Teniendo en cuenta la solución conceptual, cada vez que se encuentre cualquier tipo de paréntesis abierto, entonces, este se debe agregar al \textit{stack}. Es decir, si mientras recorremos la cadena encontramos un caracter de apertura \texttt{(}, \texttt{[} o \texttt{\{}, entonces agregar el caracter al \textit{stack}.
+
+\begin{lstlisting}[style=pythonstyle]
+if (s[i] == '(' or s[i] == '[' or s[i] == '{'):
+    stack.append(s[i])
+\end{lstlisting}
+
+\subsection{Comprobar paréntesis de cierre}
+
+Se sigue también la solución conceptual para este punto.
+
+Si encontramos un paréntesis de cierre y el \textit{stack} está vacío, entonces cambiar \texttt{flag} a \lstinline[style=pythonstyle]{False}.
+
+Si encontramos un paréntesis de cierre y el \textit{top} del \textit{stack} hace \textbf{match}, entonces remover el \textit{top} del stack. De otra forma, cambiar \texttt{flag} a \lstinline[style=pythonstyle]{False}.
+
+\begin{lstlisting}[style=pythonstyle]
+if (not len(stack)):
+    flag = False
+    break
+elif (s[i] == ')' and stack[-1] == '('):
+    stack.pop()
+elif (s[i] == ']' and stack[-1] == '['):
+    stack.pop()
+elif (s[i] == '}' and stack[-1] == '{'):
+    stack.pop()
+else:
+    flag = False
+    break
+\end{lstlisting}
+
+\subsection{Validar stack vacío}
+
+Si después de recorrer toda la cadena el \textit{stack} está vacío, imprima \texttt{YES}, de lo contrario, imprimir \texttt{NO}. A su vez, recordar utilizar \texttt{flag} para verificar si hubo un cambio de esta variable cuando se terminó el ciclo.
+
+\begin{lstlisting}[style=pythonstyle]
+if (flag and not len(stack)):
+    print("YES")
+else:
+    print("NO")
+\end{lstlisting}
+
+Recordar que la función \lstinline[style=pythonstyle]{len()} retorna un número que puede ser interpretado como \lstinline[style=pythonstyle]{False} si es \texttt{0} y \lstinline[style=pythonstyle]{True} si es \(> 0\).
+
+\subsection{Código completo}
+
+\begin{lstlisting}[style=pythonstyle]
+s = input()
+
+while (s != '0'):
+    stack = []
+    flag = True
+
+    for i in range(len(s)):
+        if (s[i] == '(' or s[i] == '[' or s[i] == '{'):
+            stack.append(s[i])
+        elif (not len(stack)):
+            flag = False
+            break
+        elif (s[i] == ')' and stack[-1] == '('):
+            stack.pop()
+        elif (s[i] == ']' and stack[-1] == '['):
+            stack.pop()
+        elif (s[i] == '}' and stack[-1] == '{'):
+            stack.pop()
+        else:
+            flag = False
+            break
+
+    if (flag and not len(stack)):
+        print("YES")
+    else:
+        print("NO")
+
+    s = input()
+\end{lstlisting}
 
 
 \newpage
